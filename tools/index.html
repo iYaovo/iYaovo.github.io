@@ -193,7 +193,7 @@
   const ipt = document.querySelector('#search-input')
   const btn = document.querySelector('#search-btn')
   const layer = document.querySelector('#search-layer')
-  const posts = JSON.parse(`[{"title":"Hello World","path":"2023/08/21/hello-world/"}]`)
+  const posts = JSON.parse(`[{"title":"Hello World","path":"2023/08/21/hello-world/"},{"title":"java","path":"2023/08/31/java-0/"}]`)
   ipt.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
       handleSearch()
@@ -258,13 +258,13 @@
       <div class="main-left--statics">
         <a href="/categories">
           <div>
-            <span>0</span>
+            <span>1</span>
             <span>分类</span>
           </div>
         </a>
         <a href="/tags">
           <div>
-            <span>0</span>
+            <span>1</span>
             <span>标签</span>
           </div>
         </a>
@@ -327,11 +327,11 @@
       </h5>
       <p class="main-left--subtitle">
         <span>文章数目：</span>
-        <span>1 篇</span>
+        <span>2 篇</span>
       </p>
       <p class="main-left--subtitle">
         <span>最近动态：</span>
-        <span>1周前</span>
+        <span>今天</span>
       </p>
       <p class="main-left--subtitle">
         <span>上线时间：</span>
@@ -347,7 +347,9 @@
       <div id="main-container" class="main-container">
 
 
-  
+  <link rel="stylesheet" href="/css/partial/tools.css" />
+
+
 
 <div class="tools">
   <h2 class="tools-title">我的自制工具列表...</h2>
@@ -418,10 +420,8 @@
         const newDom = operateDom.cloneNode(true);
         const _backtopDom = newDom.querySelector('.backtop');
         const _commentDom = newDom.querySelector('.turn-comment');
-        console.log(_commentDom)
         _backtopDom.addEventListener('click', () => backTopEvent());
         _commentDom.addEventListener('click', () => commentDomEvent());
-
         cateloguDom.appendChild(newDom);
       } else {
         commentDom.classList.add('hidden')
@@ -488,7 +488,11 @@
     const rootPath = "/"
 
     const checkAndSetArticlePageLayout = () => {
-      if (/^\/?\d{4}\/\d{2}\/\d{2}\/.*/.test(location.pathname.replace(rootPath, ''))) {
+      const path = location.pathname.replace(rootPath, '');
+      if (
+        /^\/?\d{4}\/\d{2}\/\d{2}\/.*/.test(path) ||
+        /^log\/.+/.test(path)
+      ) {
         $('.main-container, .main-right, .main-right-wrapper').addClass('is-article')
       } else {
         $('.main-container, .main-right, .main-right-wrapper').removeClass('is-article')
@@ -515,7 +519,6 @@
         $('#container').slideToggle()
         setTimeout(() => {
           initScroll();
-          window.loadImageFn();
         }, 500)
       }, 500)
     }
@@ -541,8 +544,7 @@
     $(document).on('pjax:popstate', function() {
       status = -1
       checkAndSetArticlePageLayout()
-      // $('.main-container').fadeIn()
-    })
+    });
   </script>
 </body>
 </html>
