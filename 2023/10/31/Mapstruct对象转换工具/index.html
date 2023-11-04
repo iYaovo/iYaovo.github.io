@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>我的技术与生活——tools | Hexo</title>
+  <title>我的技术与生活——Mapstruct对象转换工具 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/imgs/shortcut-icon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/css/public.css" />
@@ -16,7 +16,7 @@
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
   <script>
-    document.title = `我的技术与生活——tools`
+    document.title = `我的技术与生活——Mapstruct对象转换工具`
   </script>
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -347,28 +347,109 @@
       <div id="main-container" class="main-container">
 
 
-  <link rel="stylesheet" href="/css/partial/tools.css" />
+  <link rel="stylesheet" href="/css/partial/article.css" />
 
-
-
-<div class="tools">
-  <h2 class="tools-title">我的自制工具列表...</h2>
-  <ul class="tools-list">
-    
-      <li>
-        <img class="tool-cover" src="https://coke-cola.gitee.io/resume-page/assets/dark-f439b888.jpeg" alt="">
-        <div class="tool-info">
-          <div>
-            <p class="tool-title">在线简历生成器</p>
-            <p class="tool-intro">一个免费的在线简历生成工具</p>
+<div class="article-container">
+  <div class="article">
+    <h1 class="article-title">Mapstruct对象转换工具</h1>
+    <div class="article-info">
+      <div class="article-info--item">
+        <div class="article-info--info">
+          
+          <div class="article-info--categories">
+            <span>分类：</span>
+            <a class="category-link" href="/categories/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/">经验积累</a>
           </div>
-          <a class="tool-link" href="https://coke-cola.gitee.io/resume-page/#/" target="_blank">前往使用>></a>
+          
+          
+          <div class="article-info--tags">
+            <span>标签：</span>
+            <a class="tag-link" href="/tags/backend/" rel="tag">backend</a>
+          </div>
+          
+          <p class="article-info--date">日期：2023-10-31 16:12:47</p>
         </div>
-      </li>
+        <img src="/imgs/default-cover.webp" alt="" class="article-cover">
+      </div>
+    </div>
+    <article class="article-content markdown-body">
+      <h1 id="对象转换工具"><a href="#对象转换工具" class="headerlink" title="对象转换工具"></a>对象转换工具</h1><h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p><img src="https://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/mapstruct%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99?Expires=1698821587&OSSAccessKeyId=TMP.3KgpUUkYkZypowcDutmd8DRWw26U7HUHeR8JKvEqoizpVchT8bNnHWsrH3YVFqPjPKwwKTsg4B4CgvCCeUqhA9Nn2FgFhD&Signature=FZ+eK2eDAUnib53ffEM4ZLHPz74=">po：跟表明相同</p>
+<h2 id="Mapstruct"><a href="#Mapstruct" class="headerlink" title="Mapstruct"></a>Mapstruct</h2>
+    </article>
     
-  </ul>
+    <div class="read-nums">
+      <!-- id 将作为查询条件 -->
+      <span id="2023/10/31/Mapstruct对象转换工具/" class="leancloud_visitors" data-flag-title="Your Article Title">
+        <em class="post-meta-item-text">浏览量</em>
+        <i class="leancloud-visitors-count"></i>
+      </span>
+    </div>
+    <div class="comments-intro">
+      <h2>评论区</h2>
+      <p>欢迎你留下宝贵的意见，昵称输入QQ号会显示QQ头像哦~</p>
+    </div>
+    <div id="vcomments" class="vcomments"></div>
+    
+  </div>
+  <div class="article-catelogue">
+    <div class="article-catelogue--wrapper">
+      <div class="catelogue catelogue-1">
+        <h3>目录</h3>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">对象转换工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D"><span class="toc-number">1.1.</span> <span class="toc-text">开始之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mapstruct"><span class="toc-number">1.2.</span> <span class="toc-text">Mapstruct</span></a></li></ol></li></ol>
+      </div>
+      
+        <div class="catelogue catelogue-2">
+           
+          
+            <p>
+              <span>下一篇</span>
+              <a href="/2023/10/24/加密算法/">加密算法</a>
+            </p>
+          
+        </div>
+      
+    </div>
+  </div>
 </div>
 
+
+<script>
+  // var定义，避免pjax重新进来造成的重复声明错误
+  var config = JSON.parse('{"enable":true,"appId":"Pf8zCXGEH1qsprnWfikVVujL-gzGzoHsz","appKey":"qOqoiUHhH1TGtLRUYURkLRQX","placeholder":"请留下你宝贵的意见吧~","meta":["nick"],"recordIP":true,"visitor":true,"enableQQ":true}')
+  new Valine({
+    el: '#vcomments',
+    appId: config.appId,
+    appKey: config.appKey,
+    placeholder: config.placeholder,
+    meta: config.meta,
+    recordIP: config.recordIP,
+    visitor: config.visitor,
+    enableQQ: config.enableQQ,
+    path: '2023/10/31/Mapstruct对象转换工具/'
+  })
+</script>
+
+
+<script>
+  $(document).on('pjax:complete', function() {
+    const tocs = document.querySelector('.toc')
+    const links = tocs ? tocs.querySelectorAll('a') : []
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        const href = decodeURIComponent(e.href)
+        href.search(/#(.*)/)
+        const id = RegExp.$1
+        const target = document.querySelector('#' + id)
+        const top = target.offsetTop
+        document.documentElement.scrollTo({
+          top: top - 100,
+          behavior: 'smooth'
+        })
+        e.preventDefault()
+      })
+    })
+  })
+</script> 
 
 </div>
       <div class="main-right-wrapper"><div class="main-right">
