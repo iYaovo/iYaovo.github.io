@@ -331,11 +331,11 @@
       </p>
       <p class="main-left--subtitle">
         <span>最近动态：</span>
-        <span>2天前</span>
+        <span>今天</span>
       </p>
       <p class="main-left--subtitle">
         <span>上线时间：</span>
-        <span>97天</span>
+        <span>107天</span>
       </p>
       <p class="main-left--subtitle">
         <span>当前版本：</span>
@@ -465,7 +465,7 @@
 <p>&#x3D;&#x3D;服务和服务访问点&#x3D;&#x3D;</p>
 <p><strong>服务</strong></p>
 <p>低层实体向上层实体提供它们之间通信的能力</p>
-<p>有服务用户和服务提供着，比如说服务提供者TCP可以提供给用户FTP或者web应用</p>
+<p>有服务用户和服务提供者，比如说服务提供者TCP可以提供给用户FTP或者web应用</p>
 <p><strong>原语</strong></p>
 <p>上层使用下层服务的形式，高层使用底层提供的服务，以及低层向高层提供服务都是通过服务访问原语来进行交互的—-形式</p>
 <p>（比如顺丰可以给用户提供寄件，送件好多种服务，以不同的形式）</p>
@@ -612,7 +612,7 @@
 <li>通过URL对每个对象进行引用</li>
 <li>URL格式：</li>
 </ul>
-<p>Prot：&#x2F;&#x2F;user:<a href="mailto:&#x70;&#115;&#119;&#x40;&#119;&#119;&#119;&#46;&#115;&#111;&#109;&#x65;&#83;&#x63;&#104;&#x6f;&#111;&#x6c;&#x2e;&#101;&#x64;&#x75;">&#x70;&#115;&#119;&#x40;&#119;&#119;&#119;&#46;&#115;&#111;&#109;&#x65;&#83;&#x63;&#104;&#x6f;&#111;&#x6c;&#x2e;&#101;&#x64;&#x75;</a>&#x2F;someDept&#x2F;pic.gif:port</p>
+<p>Prot：&#x2F;&#x2F;user:<a href="mailto:&#112;&#x73;&#x77;&#x40;&#119;&#x77;&#x77;&#46;&#115;&#x6f;&#109;&#x65;&#x53;&#x63;&#x68;&#x6f;&#111;&#108;&#46;&#x65;&#100;&#117;">&#112;&#x73;&#x77;&#x40;&#119;&#x77;&#x77;&#46;&#115;&#x6f;&#109;&#x65;&#x53;&#x63;&#x68;&#x6f;&#111;&#108;&#46;&#x65;&#100;&#117;</a>&#x2F;someDept&#x2F;pic.gif:port</p>
 <p>协议名    用户 口令                主机名                         路径名                   端口</p>
 <p>&#x3D;&#x3D;HTTP概况&#x3D;&#x3D;</p>
 <p>HTTP：超文本传输协议</p>
@@ -910,13 +910,411 @@
 <li>Peer节点间歇上网，每次IP地址都有可能变化</li>
 </ul>
 <p>例子：文件分发，流媒体，VoIP</p>
-<p>P2P系统有几种运行方式</p>
+<p>P2P系统有几种运行方式，管理模式</p>
 <p><strong>非结构化P2P</strong></p>
+<p>&#x3D;&#x3D;问题&#x3D;&#x3D;</p>
 <ul>
-<li>集中化目录</li>
+<li><p>如何定位所需资源</p>
+</li>
+<li><p>如何处理对等方的加入与离开</p>
+</li>
+<li><p>集中化目录</p>
+</li>
 </ul>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9B%86%E4%B8%AD%E5%BC%8F%E7%9B%AE%E5%BD%95"></p>
+<p>上线时，向集中式目录服务器表明自己上线了，告诉自己的ip以及自己的资源。</p>
+<p>但这种集中式有问题：单点故障（集中式服务器宕机），性能瓶颈（很多人同时和集中式服务器连接），侵犯版权（pear文件的上传下载，很难确定谁侵权）</p>
+<ul>
+<li>完全分布式</li>
+</ul>
+<ol>
+<li>没有中心服务器</li>
+<li>开放文件共享协议</li>
+</ol>
+<p>当某个节点想查询某个资源，先向自己邻居发起查询，自己的邻居再向别的邻居发起查询。这种方式叫“泛洪”。拥有该资源的节点反向作出应答。目录问题就解决了。再向拥有该资源的节点发出请求。</p>
+<p>问题：泛洪停不下来</p>
+<p>解决：</p>
+<ol>
+<li>TTL：设置每过多少下不再泛洪，有限的泛洪。</li>
+<li>让中转节点记住从哪来的，不再回去了。</li>
+</ol>
+<ul>
+<li>混合体</li>
+</ul>
+<p> 组长和组长之间是分布式的，组长和组员是集中式的。</p>
+<p>组长跟踪其所有的孩子的内容。   组长与其他组长联系。</p>
 <p><strong>DHT（结构化）P2P</strong></p>
-<h3 id="2-7-CDN"><a href="#2-7-CDN" class="headerlink" title="2.7 CDN"></a>2.7 CDN</h3><h3 id="2-8-TCP套接字编程"><a href="#2-8-TCP套接字编程" class="headerlink" title="2.8 TCP套接字编程"></a>2.8 TCP套接字编程</h3><h3 id="2-9-UDP套接字编程"><a href="#2-9-UDP套接字编程" class="headerlink" title="2.9 UDP套接字编程"></a>2.9 UDP套接字编程</h3>
+<p>pear和pear构成的边是有序的。（环，树）</p>
+<h3 id="2-7-CDN"><a href="#2-7-CDN" class="headerlink" title="2.7 CDN"></a>2.7 CDN</h3><p><strong>视频流化服务和CDN：上下文</strong></p>
+<p>视频流量：占据着互联网大部分的带宽</p>
+<p>挑战：</p>
+<ul>
+<li>规模性：单个超级服务器无法提供服务</li>
+<li>异构性：不同用户拥有不同的能力（有线接入和移动用户：带宽丰富和受限用户）</li>
+</ul>
+<p>解决方案：分布式的，应用层面的基础设施</p>
+<p><strong>多媒体：视频</strong></p>
+<p>CBR（constant bit）：以固定速率编码</p>
+<p>VBR（variable bit）：视频编码速率随时间的变化而变化</p>
+<p>例子： MPEG1 MPEG2 MPEG4···············································································</p>
+<p><strong>存储视频的流化服务</strong></p>
+<p>视频点播，如果全部下载好再看，那需要等待很久。流化服务就是一边下载一边观看，就像平时看影片一样。</p>
+<p><strong>多媒体流化服务：DASH</strong></p>
+<p>Dynamic Adaptive Streaming over HTTP 基于HTTP的动态自适应流</p>
+<ul>
+<li>服务器</li>
+</ul>
+<p>将视频文件分割成多个块</p>
+<p>每个块独立存储，编码于不同码率 （多个版本）</p>
+<p>&#x3D;&#x3D;告示文件&#x3D;&#x3D;（manifest file）：提供不同块的URL</p>
+<ul>
+<li>客户端</li>
+</ul>
+<p>先获取告示文件</p>
+<p>周期性的测量服务器到客户端的带宽</p>
+<p>查询告示文件，在一个时刻请求一个块，HTTP头部指定字节范围</p>
+<p>（如果带宽足够，选择最大码率的视频块）</p>
+<p>（会话中的不同时刻，可以切换请求&#x3D;&#x3D;不同&#x3D;&#x3D;的编码块）取决于当时的可用带宽</p>
+<h3 id="2-8-TCP套接字编程"><a href="#2-8-TCP套接字编程" class="headerlink" title="2.8 TCP套接字编程"></a>2.8 TCP套接字编程</h3><p><strong>Socket编程</strong></p>
+<p>应用进程使用传输层提供的服务才能交换报文，实现应用协议，实现应用</p>
+<p>TCP&#x2F;IP：应用进程使用Socket API访问传输服务</p>
+<p>地点：界面上的SAP（Socket） 方式：Socket API</p>
+<p>&#x3D;&#x3D;目标&#x3D;&#x3D;：学习如何构建能借助sockets进行通信的C&#x2F;S应用程序</p>
+<p>socket：分布式应用进程之间的门，传输层协议提供的端到端的服务接口</p>
+<p><strong>2种传输层服务的socket类型：</strong></p>
+<p>TCP：可靠的、字节流的服务</p>
+<p>UDP：不可靠（UDP数据报）服务</p>
+<p><strong>TCP套接字编程</strong></p>
+<p>&#x3D;&#x3D;服务器首先运行，等待连接状态&#x3D;&#x3D;</p>
+<p>1.服务器进程必须先处于运行状态</p>
+<ul>
+<li>创建欢迎socket</li>
+<li>和本地端口捆绑</li>
+<li>在欢迎socket上阻塞式等待接收用户的连接</li>
+</ul>
+<p>&#x3D;&#x3D;客户端主动和服务器建立连接&#x3D;&#x3D;</p>
+<p>2.创建服务端本地套接字（隐式捆绑到本地port）</p>
+<ul>
+<li>指定服务器进程的IP地址和端口号，与服务器进程连接。</li>
+</ul>
+<p>3.当与客户端连接请求到来时</p>
+<ul>
+<li>服务器接受来自用户端的请求，接触阻塞式等待，返回一个新的socket（与欢迎socket不一样），与客户端通信<ul>
+<li>允许服务器与多个客户端通信</li>
+<li>使用源IP和源端口来区分不同的客户端</li>
+</ul>
+</li>
+</ul>
+<p>4.连接API调用有效时，客户端P与服务器建立了TCP连接</p>
+<p><strong>TCPsocket编程</strong></p>
+<p>&#x3D;&#x3D;C&#x2F;S模式的应用样例&#x3D;&#x3D;</p>
+<p>客户端在控制台输入小写字母发给服务器，服务器返回小写字母给客户端。</p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCPsocket"></p>
+<p>跟上面的步骤一样，服务器先建立welcomesocket，包含了自己的IP和port，阻塞式等待客户端来连接。</p>
+<p>客户端建立clientsocket（包含服务器的ip和port），服务器建立新的socket，包含自己的ip和port和客户端的ip和port，客户端给服务器发送请求，把小写字母发送过去，然后服务器处理后发回给客户端。</p>
+<p>然后关闭connectionSocket，服务器继续等待连接。</p>
+<p>补：socket都是一个整数，包括自己学习java操作对象时，也是操作一个整数句柄，而不是操作文件本身。</p>
+<h3 id="2-9-UDP套接字编程"><a href="#2-9-UDP套接字编程" class="headerlink" title="2.9 UDP套接字编程"></a>2.9 UDP套接字编程</h3><p>没有握手，UPDsocket只和本地ipport捆绑。</p>
+<p>发送端在每一个报文中必须明确指明目标的ip和port，不然不知道发给谁。</p>
+<p>服务器必须从收到的分组中提取出发送端的IP和port</p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/UDPsocket"></p>
+<p>与TCPsocket差不多，但服务器只用一个socket去进行一系列操作。</p>
+<p>而且服务器只保存自己的ip和port，所以每次请求都要包含发送端的ip和port，否则收到后不知道往哪回复。</p>
+<h2 id="第三章：传输层"><a href="#第三章：传输层" class="headerlink" title="第三章：传输层"></a>第三章：传输层</h2><h3 id="3-1概述传输层服务"><a href="#3-1概述传输层服务" class="headerlink" title="3.1概述传输层服务"></a>3.1概述传输层服务</h3><p> <strong>传输服务和协议</strong></p>
+<ul>
+<li>为运行在不同主机上的应用进程提供逻辑通信（应用进程的通信需要传输层双方TCP的配合进行）</li>
+<li>传输协议运行在端系统<ul>
+<li>发送方：将应用层的报文分成报文段，然后传递给网络层</li>
+<li>接收方：将报文段重组成报文，然后传递给应用层</li>
+</ul>
+</li>
+<li>有多个传输层协议可供应用选择<ul>
+<li>Internet：TCP和UDP</li>
+</ul>
+</li>
+</ul>
+<p><strong>传输层 vs 网络层</strong></p>
+<ul>
+<li>网络层服务：主机之间的逻辑通信</li>
+<li>传输层服务器：进程间的逻辑通信<ul>
+<li>依赖于网络层的服务</li>
+<li>并加强（数据丢失，顺序混乱，加密）</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2多路复用-解复用"><a href="#3-2多路复用-解复用" class="headerlink" title="3.2多路复用&#x2F;解复用"></a>3.2多路复用&#x2F;解复用</h3><p>在发送方主机多路复用：</p>
+<p>从多个套接字接收来自多个进程的报文，根据套接字对应的IP地址和端口号等信息对报文段用头部加以封装（该头部用于以后的解复用）</p>
+<p>在接收方主机多路解复用：</p>
+<p>根据报文段的头部信息中的IP地址和端口号将接收到的报文段发给正确的套接字（和对应的应用进程）</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TCP是带着源ip目标ip源port目标port去传</span><br><span class="line">UDP是带着源ip和port</span><br><span class="line">因为TCP要握手 UDP不需要握手 </span><br><span class="line">UDP只知道自己的源ip和port，当需要与其他UDP配合传message时，UDP把socket和对方的ip和port一并传给网络层。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="3-3无连接传输UDP"><a href="#3-3无连接传输UDP" class="headerlink" title="3.3无连接传输UDP"></a>3.3无连接传输UDP</h3><p>UDP在IP的基础上只增加了复用解复用服务，没有增加更多的东西，因此它和IP提供的服务一样，也是尽力而为的服务。</p>
+<p>UDP传输延迟比较小，有可能是后传的先到，有可能会乱序。</p>
+<p><strong>无连接</strong></p>
+<ul>
+<li>UDP发送端和接收端之间没有握手</li>
+<li>每个UDP报文段都被独立地处理</li>
+</ul>
+<p>UDP被用于：流媒体（丢失不敏感，速率敏感）</p>
+<p>​							DNS</p>
+<p>​						    SNMP</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TCP可靠，但是负担大。UDP负担小，效率快。</span><br><span class="line">那如何把两个结合起来？为什么不创建第三个协议合并他们？</span><br><span class="line">	因为TCP UDP已经能满足85<span class="comment">%以上的应用进程，没必要。</span></span><br><span class="line">	你可以使用UDP，然后在应用层用特定的差错恢复。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/UDP%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE"></p>
+<p><strong>UDP校验和</strong></p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/UDP%E6%A0%A1%E9%AA%8C%E5%92%8C"></p>
+<p>在发送之前计算校验和，发送后在接收端计算一次，如果不一样就一定发生了差错，抛掉该UDP即可。</p>
+<p>如果校验和一致，也不一定是没差错。</p>
+<h3 id="3-4可靠数据传输（rdt）的原理"><a href="#3-4可靠数据传输（rdt）的原理" class="headerlink" title="3.4可靠数据传输（rdt）的原理"></a>3.4可靠数据传输（rdt）的原理</h3><ul>
+<li>rdt在应用层、传输层、数据链路层都很重要</li>
+<li>是网络Top 10问题之一</li>
+</ul>
+<p>rdt要向上层提供服务，但rdt依赖的服务却不怎么可靠。因此rdt本层的协议机制要靠哪些安排向上层提供服务？</p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/rdt%E9%97%AE%E9%A2%98"></p>
+<p><strong>我们将</strong></p>
+<ul>
+<li>渐增式地开发可靠数据传输协议（rdt）的发送方和接收方</li>
+</ul>
+<p>如果一口气把每个处理机制讲出来很难理解，现在我们假设下层的服务是可靠的，每当下层服务变得不可靠一点点，rdt会做出什么机制应对。</p>
+<ul>
+<li>只考虑单项数据传递</li>
+<li>我们使用有限状态机（FSM）来描述发送方和接收方</li>
+</ul>
+<p>&#x3D;&#x3D;Rdt1.0 在可靠信道上的可靠数据传输&#x3D;&#x3D;</p>
+<ul>
+<li>下层的信道是完全可靠的</li>
+<li>发送方和接收方的FSM<ul>
+<li>发送方将数据发送到下层信道</li>
+<li>接收方从下层信道接收数据</li>
+</ul>
+</li>
+</ul>
+<p><strong>结论：Rdt1.0下层服务完全可靠，rdt只需要做封装解封装</strong></p>
+<p>&#x3D;&#x3D;Rdt2.0 具有比特差错的信道&#x3D;&#x3D;</p>
+<p>比特出错，1变成0,0变成1的反转</p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/rdt2.0"></p>
+<p>发送方有两个状态：一是等待来自上层的调用，二是等待ACK和NAK。 接收方就是等待下层调用。</p>
+<p>发送方差错控制编码  接收方差错控制解码 </p>
+<p>如果没问题，回应ACK，这时发送方就发送新的</p>
+<p>如果有问题，回应NAK，这时发送方将存的副本再次发送一次。</p>
+<p>**致命问题：packet有可能是错的，那么ACK和NAK 就没可能是错的吗？ **</p>
+<p>万一发来的不是ACK和NAK那发送方该传什么。</p>
+<p>&#x3D;&#x3D;Rdt2.1 编号&#x3D;&#x3D;</p>
+<p>所以解决：给packet编号。</p>
+<p>发送方发送 p0，接收方传回来的东西出错，那就再重发一次。接收方也就明白了自己传的东西有问题，它就会重传一次ACK，期待发送方的p1。（有序号之后，接收方也就知道发送方发了两次正确的，那扔掉一个就好了）</p>
+<p>stop and wait 停止等待协议</p>
+<p>一次只发一个分组，等到结果后才会接着发送。</p>
+<ul>
+<li>两个序列号（0,1）就足够了，因为一次只发送一个未经确认的分组，用0和1区分是否已经接收过即可。</li>
+</ul>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/rdt2.1%E7%9A%84%E8%BF%90%E8%A1%8C.png"></p>
+<p>&#x3D;&#x3D;Rdt 2.2 无NAK的协议&#x3D;&#x3D;</p>
+<p>当发送方发送packet1，本来接收方该回传NAK1，但可以回传ACK0。</p>
+<p>发送方期待的是ACK1，可是接收方发送ACK0，意味着packet1出错了。</p>
+<p><strong>对前一个分组的正向确认代替对当前分组的反向确认</strong></p>
+<p>实际也是对确认分组做编号。 </p>
+<p>&#x3D;&#x3D;Rdt3.0 具有比特差错和分组丢失的信道&#x3D;&#x3D;</p>
+<p>分组丢失是因为路由器有队列，队满了就丢失了。</p>
+<p>当p1发送出去，发送方等待ACK1，但是p1在接收方这里丢失了，接收方继续等待p1，发送方继续等待ACK1，形成死锁。</p>
+<p><strong>超时重传机制</strong></p>
+<p>时间设置为比正常往返时间多一点。</p>
+<p>当超时，就重传p1。</p>
+<p>&#x3D;&#x3D;新问题：停止等待协议在某种情况链路利用率很低&#x3D;&#x3D;</p>
+<p>如果链路很长，你每次只发送一个packet然后等待回应，那更多的时间都在等待，利用率太低。所以需要流水线协议</p>
+<p>铺垫：</p>
+<p><strong>滑动窗口协议</strong></p>
+<ul>
+<li><p>发送缓冲区</p>
+<ul>
+<li>形式：内存中的一个区域，落入缓冲区的分组可以发送</li>
+<li>功能：用于存放已发送，但是没有得到确认的分组</li>
+<li>必要性：需要重发时可用</li>
+</ul>
+</li>
+<li><p>发送缓冲区的大小：一次最多可以发送多少个未经确认的分组</p>
+<ul>
+<li>停止等待协议&#x3D;1</li>
+<li>流水线协议&gt;1,合理的值，不是很大，链路利用率不能够超100%</li>
+</ul>
+</li>
+<li><p>发送缓冲区的分组</p>
+<ul>
+<li>未发送的：落入发送缓冲区的分组，可以连续发送出去</li>
+<li>已经发送出去的、等待对方确认的分组：发送缓冲区的分组只有得到确认才能删除</li>
+</ul>
+</li>
+<li><p>发送窗口：发送缓冲区内容的一个范围</p>
+<ul>
+<li>那些已发送但是未经确认分组的序号构成的空间</li>
+</ul>
+</li>
+<li><p>发送窗口的最大值 &lt;&#x3D;发送缓冲区的值           </p>
+</li>
+<li><p>一开始：没有发送任何一个分组</p>
+<ul>
+<li>后沿&#x3D;前沿</li>
+<li>之间为发送窗口的尺寸&#x3D;0</li>
+</ul>
+</li>
+<li><p>每发送一个分组，前沿前移一个单位</p>
+</li>
+<li><p>接收窗口 &#x3D; 接收缓冲区</p>
+<ul>
+<li>接收窗口用于控制哪些分组可以接收<ul>
+<li>只有收到的分组序号落入接收窗口内才允许接收</li>
+<li>若序号在接收窗口之外，则丢弃</li>
+</ul>
+</li>
+<li>接收窗口尺寸Wr&#x3D;1，则只能顺序接收</li>
+<li>接收窗口尺寸Wr&gt;1，则可以乱序接收（但提交给上层的分组要按序）</li>
+<li>例子：Wr&#x3D;1，在0的位置：只有0号分组可以接收；向前滑动一个，罩在1的位置，如果来了2号分组，则丢弃。</li>
+</ul>
+</li>
+<li><p>接收窗口的滑动和发送确认</p>
+<ul>
+<li>滑动：<ul>
+<li>低序号分组到来，接收窗口滑动</li>
+<li>高序号分组乱序到，缓存但不交付（因为要实现rdt，不能乱序），不滑动</li>
+</ul>
+</li>
+<li>发送确认：<ul>
+<li>接收窗口尺寸&#x3D;1：发送连续收到的最大的分组确认（累计确认）</li>
+<li>接收窗口尺寸&gt;1：收到分组，发送那个分组的确认（非累计确认）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>GBN协议和SR协议的异同</strong></p>
+<ul>
+<li>相同<ul>
+<li>发送窗口&gt;1</li>
+<li>一次能够可发送多个未经确认的分组</li>
+</ul>
+</li>
+<li>不同<ul>
+<li>GBN：接收窗口尺寸&#x3D;1<ul>
+<li>接收端：只能顺序接收</li>
+<li>发送端：从表现来看，一旦一个分组没有成功 比如234都发送出去了，但1没有。要返回1重新发送，从1 2 3 4重新发送。</li>
+</ul>
+</li>
+<li>SR：接收窗口尺寸&gt;1<ul>
+<li>接收端：可以乱序接收</li>
+<li>发送端：发送0，1,2,3 一旦1未成功，2,3,4，已发送，无需重发，选择性发送1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%8D%8F%E8%AE%AE.png"></p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%AF%B9%E6%AF%94GBN%E5%92%8CSR.png"></p>
+<h3 id="3-5-面向连接的传输：TCP"><a href="#3-5-面向连接的传输：TCP" class="headerlink" title="3.5 面向连接的传输：TCP"></a>3.5 面向连接的传输：TCP</h3><p>&#x3D;&#x3D;段结构&#x3D;&#x3D;</p>
+<p><strong>TCP</strong></p>
+<ul>
+<li>点到点：一个发送方，一个接收方</li>
+<li>可靠的、按顺序的字节流：没有报文边界</li>
+<li>管道化（流水线）：TCP拥塞控制和流量控制设置窗口大小</li>
+<li>发送和接收缓存：为了超时重发、检错重发</li>
+<li>全双工数据：在同一连接中数据流双向流动</li>
+<li>MSS：报文最大大小</li>
+</ul>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/MSS.png"></p>
+<p>MSS就是最上面的报文，它经过传输层要加上TCP的头部，经过网络层要加上IP的头部，最后到了物理层面，以太网最大是1500B，减去TCP和IP的头部就是MSS。</p>
+<ul>
+<li>面向连接</li>
+<li>有流量控制：发送方不会淹没接收方</li>
+</ul>
+<p><strong>TCP报文段结构</strong></p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP%E6%8A%A5%E6%96%87%E6%AE%B5%E7%BB%93%E6%9E%84.png"></p>
+<ul>
+<li>其中ACK（确认号）的解释与之前有些不同</li>
+</ul>
+<p>接收方如果给发送方传 ACK&#x3D;555，意味着接收方已经收到了554及554之前的字节，期待发送方从555发</p>
+<ul>
+<li>接收方如何处理乱序的报文段（看实现者自己的规定 缓存&#x2F;丢弃）</li>
+<li><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%BA%8F%E5%8F%B7%E5%92%8C%E7%A1%AE%E8%AE%A4%E5%8F%B7.png"></li>
+</ul>
+<p>对主机B来说，收到seq&#x3D;42，确认号ACK就给主机A传43（代表42及以前我已经收到了）。</p>
+<p><strong>TCP往返延时和超时</strong></p>
+<p>一个合理的定时器是很有用的。</p>
+<p>时间太短的话，确认号还在路上，结果发送方已经等不及了，进行了不必要的反复传输。</p>
+<p>时间太长的话，确认号在路上出了问题，等半天也没有进行重新传输</p>
+<p>这个值不是一个固定值，适应性的变化。</p>
+<p>定期的去测量往返延迟：<strong>SampleRTT</strong>：测量从报文段发出到收到确认的时间</p>
+<ul>
+<li>EstimatedRTT &#x3D; （1-a）*EstimatedRTT + a *SampleRTT</li>
+</ul>
+<p>​         估计值                                  上一次估计值                           </p>
+<ul>
+<li><p>SampleRTT会偏离EstimatedRTT多远：</p>
+<p>​		DevRTT &#x3D; （1-β）* DevRTT + β * | SampleRTT - EstimatedRTT |</p>
+</li>
+</ul>
+<p><strong>超时时间间隔设置为</strong></p>
+<p>  TimeoutInterval &#x3D; EstimatedRTT + 4*DevRTT</p>
+<p>&#x3D;&#x3D;Rdt&#x3D;&#x3D;</p>
+<ul>
+<li>TCP在IP不可靠服务的基础上建立了rdt<ul>
+<li>管道化的报文段<ul>
+<li>GBN or SR</li>
+</ul>
+</li>
+<li>累积确认  接收方如果给发送方传 ACK&#x3D;555，期待发送方从555发</li>
+<li>好多段一个定时器，只和最老发出的那个段相关联</li>
+<li>收到乱序到来的报文段：可以缓存可以抛掉</li>
+</ul>
+</li>
+<li>触发重传：发送方超时&#x2F;发送方收到某些段的三个冗余确认（快速重传）</li>
+</ul>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP%E5%8F%91%E9%80%81%E6%96%B9%E4%BA%8B%E4%BB%B6.png"></p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%8E%A5%E6%94%B6%E6%96%B9%E5%9B%9E%E4%BC%A0ACK.png"></p>
+<p><strong>第一种</strong></p>
+<p>如果超时时间设置有问题，两段ACK都没有传到发送方，但是超时了，发送方重新传92,8字节。</p>
+<p>那么接收方回传ACK为什么是120？</p>
+<p>​		接收方回传的ACK应该是传来数据的位置+1。</p>
+<p>但是这里会有一个辅助定时器：</p>
+<p>​		如果92到98的到了，不会立马回传ACK&#x3D;99，会等待辅助定时器超时，超时前会等99到119来，这样的话回传ACK&#x3D;120即可，少传一次ACK&#x3D;99，减少对发送方的干扰。但辅助定时器的作用是：如果太久不发ACK，发送方可能会重传。</p>
+<p><strong>第二种</strong></p>
+<p>99到119到了，92到98没到，乱序到来。这时要快发送ACK&#x3D;92，让发送方赶快把第一段补给自己。</p>
+<p><strong>快速重传</strong></p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0.png"></p>
+<p>上面已经介绍过快速重传，就是当有一个正常确认后来了三个冗余的确认，那么发送方就会启动快速重传，这种比定时器的超时快一些，能更快的补充缺口。</p>
+<p>比如上图情况，当第二段没传到，会发送ACK&#x3D;50，这是正常确认。</p>
+<p>然后第三段到了，会发送ACK&#x3D;50，第一次冗余确认。</p>
+<p>然后第四段到了，会发送ACK&#x3D;50，第二次冗余确认。</p>
+<p>然后第五段到了，会发送ACK&#x3D;50，第三次冗余确认。</p>
+<p><strong>TCP流量控制</strong></p>
+<p>接收方会有缓冲区，接收方给发送方的反馈中有接收方缓冲区剩余的字节，发送方就知道最多能发送多少个字节给接收方，这样不至于接收方没地方存导致数据溢出。</p>
+<p><strong>连接管理</strong></p>
+<p><strong>同意建立连接</strong></p>
+<p>两次握手为什么不行？</p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B8%A4%E6%AC%A1%E6%8F%A1%E6%89%8B.png"></p>
+<p>看右边：</p>
+<p>第一次连接请求，然后超时了，又发送了第二次连接请求。但第一次的连接请求现在到了，建立起一个正常的连接，然后开始传数据，又超时了，再次第二次传数据。结果第一次连接接收方收到了数据，只不过ACK回复慢了。然后又收到了第二次连接请求，又同意了，然后又收到了第二次传的数据，又顺理成章收到了，接收方就会以为只是正常的两次连接和两次数据传输，不知道出了问题。</p>
+<p>接收方把旧数据当成新数据来收了</p>
+<p><strong>三次握手</strong></p>
+<p>解决方案：变化的初始序号+双方确认对方的序号（3次握手）</p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png"></p>
+<p>客户端给服务器传自己的序号1，并标明自己要从X接收数据</p>
+<p>服务器给客户端传对方的序号1，并表明要从x+1给对方传（表明收到了对方的信息），并表明自己想从y接收数据和自己的序号1（给对方自己的信息）</p>
+<p>客户端知道了对方的信息，并表明从y+1传。</p>
+<p><img src="http://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%A7%A3%E5%86%B3%E4%BA%8C%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%9A%84%E9%97%AE%E9%A2%98.png"></p>
+<p>对于半连接：当客户端因超时又给服务器发送连接，服务器同意，但是客户端能识别到这是我当时因为超时发送的连接，所以可以拒绝服务器。</p>
+<p>对于老数据：因为不会有半连接的问题，所以在客户端因为超时给服务器传数据的时候，服务器就知道没建立连接，所以也就不接收数据。</p>
+<p>还有一个诡异的东西，对于上面的老数据被抛弃后，会滞留在网络中。假设客户端与服务器又以相同的端口建立连接，假设这个数据刚好就又到了服务器那里，怎么办？</p>
+<p>这时序号就起作用了，我们此时假设是以x和y传递数据，那上次建立的序号过来也没用，不接收。</p>
+<p><strong>关闭连接</strong></p>
+<p> 连接是两端的，要关闭需要进行两次操作，关闭a到b的连接和关闭b到a的连接。</p>
+<p>这种半连接的关闭不可靠。因为双方都不知道对方到底关闭连接没。</p>
+<p>所以有个方案：</p>
+<p>​	双方取消连接后，建立一个定时器，这个时间内没有数据传输就代表真正关闭了。</p>
+
     </article>
     
     <div class="read-nums">
@@ -937,7 +1335,7 @@
     <div class="article-catelogue--wrapper">
       <div class="catelogue catelogue-1">
         <h3>目录</h3>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">计算机网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">第一章：计算机网络概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E4%BB%80%E4%B9%88%E6%98%AFInternet"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1什么是Internet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E6%88%90%E8%A7%92%E5%BA%A6"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">构成角度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E8%A7%92%E5%BA%A6"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">服务角度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 网络边缘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 网络核心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4%E5%88%86%E7%BB%84%E5%BB%B6%E6%97%B6%EF%BC%8C%E4%B8%A2%E5%A4%B1%E5%92%8C%E5%90%9E%E5%90%90%E9%87%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4分组延时，丢失和吞吐量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E5%8D%8F%E8%AE%AE%E5%B1%82%E6%AC%A1%E5%92%8C%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5 协议层次和服务模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6%E5%8E%86%E5%8F%B2"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.6历史</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">第二章：应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E5%BA%94%E7%94%A8%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1应用层原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E5%BA%94%E7%94%A8%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">可能的应用架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">进程通信</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Web%E5%92%8CHTTP"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Web和HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-FTP"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 FTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Email"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 Email</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-DNS"><span class="toc-number">1.2.5.</span> <span class="toc-text">2.5 DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-P2P%E5%BA%94%E7%94%A8"><span class="toc-number">1.2.6.</span> <span class="toc-text">2.6 P2P应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-CDN"><span class="toc-number">1.2.7.</span> <span class="toc-text">2.7 CDN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-TCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B"><span class="toc-number">1.2.8.</span> <span class="toc-text">2.8 TCP套接字编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-9-UDP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B"><span class="toc-number">1.2.9.</span> <span class="toc-text">2.9 UDP套接字编程</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">计算机网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">第一章：计算机网络概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E4%BB%80%E4%B9%88%E6%98%AFInternet"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1什么是Internet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E6%88%90%E8%A7%92%E5%BA%A6"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">构成角度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E8%A7%92%E5%BA%A6"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">服务角度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 网络边缘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 网络核心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4%E5%88%86%E7%BB%84%E5%BB%B6%E6%97%B6%EF%BC%8C%E4%B8%A2%E5%A4%B1%E5%92%8C%E5%90%9E%E5%90%90%E9%87%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4分组延时，丢失和吞吐量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E5%8D%8F%E8%AE%AE%E5%B1%82%E6%AC%A1%E5%92%8C%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5 协议层次和服务模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6%E5%8E%86%E5%8F%B2"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.6历史</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">第二章：应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E5%BA%94%E7%94%A8%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1应用层原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E5%BA%94%E7%94%A8%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">可能的应用架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">进程通信</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Web%E5%92%8CHTTP"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Web和HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-FTP"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 FTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Email"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 Email</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-DNS"><span class="toc-number">1.2.5.</span> <span class="toc-text">2.5 DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-P2P%E5%BA%94%E7%94%A8"><span class="toc-number">1.2.6.</span> <span class="toc-text">2.6 P2P应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-CDN"><span class="toc-number">1.2.7.</span> <span class="toc-text">2.7 CDN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-TCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B"><span class="toc-number">1.2.8.</span> <span class="toc-text">2.8 TCP套接字编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-9-UDP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B"><span class="toc-number">1.2.9.</span> <span class="toc-text">2.9 UDP套接字编程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">1.3.</span> <span class="toc-text">第三章：传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E6%A6%82%E8%BF%B0%E4%BC%A0%E8%BE%93%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1概述传输层服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-%E8%A7%A3%E5%A4%8D%E7%94%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2多路复用&#x2F;解复用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3%E6%97%A0%E8%BF%9E%E6%8E%A5%E4%BC%A0%E8%BE%93UDP"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3无连接传输UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%EF%BC%88rdt%EF%BC%89%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4可靠数据传输（rdt）的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E7%9A%84%E4%BC%A0%E8%BE%93%EF%BC%9ATCP"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 面向连接的传输：TCP</span></a></li></ol></li></ol></li></ol>
       </div>
       
         <div class="catelogue catelogue-2">
