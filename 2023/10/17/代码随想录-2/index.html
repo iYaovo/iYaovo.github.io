@@ -193,7 +193,7 @@
   const ipt = document.querySelector('#search-input')
   const btn = document.querySelector('#search-btn')
   const layer = document.querySelector('#search-layer')
-  const posts = JSON.parse(`[{"title":"java","path":"2023/08/31/java-0/"},{"title":"图片上传","path":"2023/09/01/图片上传-1/"},{"title":"代码随想录","path":"2023/10/17/代码随想录-2/"},{"title":"加密算法","path":"2023/10/24/加密算法/"},{"title":"Mapstruct对象转换工具","path":"2023/10/31/Mapstruct对象转换工具/"}]`)
+  const posts = JSON.parse(`[{"title":"图片上传","path":"2023/09/01/图片上传-1/"},{"title":"代码随想录","path":"2023/10/17/代码随想录-2/"},{"title":"加密算法","path":"2023/10/24/加密算法/"},{"title":"对象转换工具","path":"2023/10/31/Mapstruct对象转换工具/"},{"title":"计算机网络","path":"2023/11/08/计算机网络/"}]`)
   ipt.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
       handleSearch()
@@ -331,11 +331,11 @@
       </p>
       <p class="main-left--subtitle">
         <span>最近动态：</span>
-        <span>今天</span>
+        <span>2天前</span>
       </p>
       <p class="main-left--subtitle">
         <span>上线时间：</span>
-        <span>75天</span>
+        <span>97天</span>
       </p>
       <p class="main-left--subtitle">
         <span>当前版本：</span>
@@ -374,21 +374,27 @@
     </div>
     <article class="article-content markdown-body">
       <h1 id="代码随想录"><a href="#代码随想录" class="headerlink" title="代码随想录"></a>代码随想录</h1><p>本笔记为了记录刷代码随想录题的自己的思路，题目去代码随想录找即可。</p>
-<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="1-移除链表元素"><a href="#1-移除链表元素" class="headerlink" title="1.移除链表元素"></a>1.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-linked-list-elements/description/">移除链表元素</a></h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>链表的移除有两个部分，一个是头节点，一个是非头节点，非头节点只需让其前一个节点指向其下一个节点即可。头节点则需要将自己移动到下一个节点。</p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="1-移除链表元素"><a href="#1-移除链表元素" class="headerlink" title="1.移除链表元素"></a>1.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-linked-list-elements/description/">移除链表元素</a></h3><p><strong>思路</strong></p>
+<p>链表的移除有两个部分，一个是头节点，一个是非头节点，非头节点只需让其前一个节点指向其下一个节点即可。头节点则需要将自己移动到下一个节点。</p>
 <p><strong>or</strong></p>
 <p>使用虚拟头节点，这样的话，整个链表中每个元素都有前一个节点，写起来代码统一很多。</p>
 <p>两种方法大致思路是：</p>
 <p>​	遍历该节点.next，当下一个节点的val值与要求值相同，则将其上一个节点指向其下一个节点。直到下一个节点为null；</p>
 <p>​	&#x3D;&#x3D;为什么不遍历该节点，而要遍历该节点.next？&#x3D;&#x3D;</p>
 <p>​		  如果遍历该节点，发现该节点需要移除，那么怎么让它的上一个节点指向下一个节点呢？是没有办法的，因为是单项链表，没有办法找到上一个节点的值，没有记录。所以要从该节点.next开始遍历。</p>
-<h3 id="2-翻转链表"><a href="#2-翻转链表" class="headerlink" title="2.翻转链表"></a>2.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-linked-list/">翻转链表</a></h3><h4 id="双指针法"><a href="#双指针法" class="headerlink" title="双指针法"></a>双指针法</h4><p>一个链表</p>
+<h3 id="2-翻转链表"><a href="#2-翻转链表" class="headerlink" title="2.翻转链表"></a>2.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-linked-list/">翻转链表</a></h3><p><strong>双指针法</strong></p>
+<p>一个链表</p>
 <p>​	node1-&gt;node2-&gt;node3-&gt;null</p>
 <p>翻转就是将箭头翻转</p>
 <p>利用双指针，一个pre&#x3D;null，一个cur&#x3D;head</p>
 <p>把cur的next一次一次的指向pre，就一次次的把箭头翻转。</p>
-<h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><p>跟双指针一样，他同样是翻转箭头。</p>
-<h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h4><p>把节点一个一个存入栈，再来一个虚拟节点一个一个取出来接到后面连成一个翻转后的链表；</p>
-<h3 id="3-两两交换链表中的节点"><a href="#3-两两交换链表中的节点" class="headerlink" title="3.两两交换链表中的节点"></a>3.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/swap-nodes-in-pairs/">两两交换链表中的节点</a></h3><h4 id="递归-1"><a href="#递归-1" class="headerlink" title="递归"></a><strong>递归</strong></h4><h4 id="虚拟头节点"><a href="#虚拟头节点" class="headerlink" title="虚拟头节点"></a><strong>虚拟头节点</strong></h4><p>虽说移出链表元素时已经解除虚拟头节点，但做这道题时，明显还是不太懂虚拟头节点的作用。</p>
+<p><strong>递归</strong></p>
+<p>跟双指针一样，他同样是翻转箭头。</p>
+<p><strong>栈</strong></p>
+<p>把节点一个一个存入栈，再来一个虚拟节点一个一个取出来接到后面连成一个翻转后的链表；</p>
+<h3 id="3-两两交换链表中的节点"><a href="#3-两两交换链表中的节点" class="headerlink" title="3.两两交换链表中的节点"></a>3.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/swap-nodes-in-pairs/">两两交换链表中的节点</a></h3><p><strong>递归</strong></p>
+<p><strong>虚拟头节点</strong></p>
+<p>虽说移出链表元素时已经解除虚拟头节点，但做这道题时，明显还是不太懂虚拟头节点的作用。</p>
 <p>刚做的时候没弄虚拟头节点，两两交换之后，准备返回头节点提交，才发现不知道怎么找到头节点，这时才理解了虚拟头节点还有这个作用，虚拟头节点.next就是头节点。</p>
 <p>&#x3D;&#x3D;通过这道题&#x3D;&#x3D;</p>
 <p>理解到，链表一是搞清楚指向哪，二是搞清楚怎么保存好前面的东西，因为是单向链表，不然的话做完也找不到提交的头节点。</p>
@@ -398,7 +404,8 @@
 <p>为什么要保存节点？</p>
 <p> dump-&gt;1-&gt;2-&gt;-&gt;3-&gt;4</p>
 <p>交换时要把dump指向2，这时无法找到1，所以提前要把1保存下来。</p>
-<h3 id="4-删除链表的倒数第-N-个结点"><a href="#4-删除链表的倒数第-N-个结点" class="headerlink" title="4.删除链表的倒数第 N 个结点"></a>4.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">删除链表的倒数第 N 个结点</a></h3><h4 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h4><p>第一个自己做出来的链表题。</p>
+<h3 id="4-删除链表的倒数第-N-个结点"><a href="#4-删除链表的倒数第-N-个结点" class="headerlink" title="4.删除链表的倒数第 N 个结点"></a>4.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">删除链表的倒数第 N 个结点</a></h3><p><strong>思路</strong>：</p>
+<p>第一个自己做出来的链表题。</p>
 <p><strong>暴力解法</strong></p>
 <p>现在并不清楚一共有几个节点，先用一个while循环判断一下一共几个节点。</p>
 <p>然后通过for循环将辅助节点移动到删除节点前一位，然后将它.next指向它.next.next</p>
@@ -409,12 +416,14 @@
 <p>想到了用双指针遍历寻找。但是不知道怎么遍历下手，因为长度不一样。</p>
 <p>后来看了题解，发现如果想要找相交的地方，相交之后两个链表是一样的东西，一样的长度，所以想要相交就必须从长度一样开始找，所以先把长的链表的指针移动到和短的链表一样的地方，然后同样的长度开始遍历寻找从哪个位置开始指针相同。</p>
 <h3 id="6-环形链表-II"><a href="#6-环形链表-II" class="headerlink" title="6. 环形链表 II"></a>6. <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/linked-list-cycle-ii/">环形链表 II</a></h3><p>两大难点:判断是否为环&#x2F;找环的起点</p>
-<h4 id="判断是否为环"><a href="#判断是否为环" class="headerlink" title="判断是否为环"></a>判断是否为环</h4><p>双指针</p>
+<p><strong>判断是否为环</strong></p>
+<p>双指针</p>
 <p>一个慢指针，一次走一步</p>
 <p>一个快指针，一次走两步</p>
 <p>当快慢指针可以相遇，就说明是环</p>
 <p>万一错过呢？   快指针相对慢指针每次走一步，所以说一步一步走，不会跳过慢指针。</p>
-<h4 id="找环的起点"><a href="#找环的起点" class="headerlink" title="找环的起点"></a>找环的起点</h4><p>找代码随想录视频吧，难以描述有点。</p>
+<p><strong>找环的起点</strong></p>
+<p>找代码随想录视频吧，难以描述有点。</p>
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1if4y1d7ob/?vd_source=f463b96032ce854a1b3b9166851f7fd1">把环形链表讲清楚！ 如何判断环形链表？如何找到环形链表的入口？ LeetCode：142.环形链表II_哔哩哔哩_bilibili</a></p>
 <h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2><h3 id="1-基础知识"><a href="#1-基础知识" class="headerlink" title="1.基础知识"></a>1.基础知识</h3><p>散列表，也叫哈希表，是根据关键码值而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。这个映射函数叫散列函数，存放记录的数组叫做散列表。</p>
 <p>&#x3D;&#x3D;哈希表作用&#x3D;&#x3D;</p>
@@ -427,6 +436,167 @@
 <p>从上图中看，需要一个蓝框的HashTable是一个数组，用来存放很多链表，然后还要有EMP类。</p>
 <p>链表要有增删改查方法，但是最后进行增删改查的是HashTable，因为需要通过散列函数来进行确定id为多少多少的元素在哪个链表。</p>
 <p>散列函数有很多方法写，一种是取模法，id%size（size是数组长度）</p>
+<h3 id="2-有效的字母异位词"><a href="#2-有效的字母异位词" class="headerlink" title="2. 有效的字母异位词"></a>2.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-anagram/"> 有效的字母异位词</a></h3><p>这道题比较简单，刚学了哈希数组存储的原理。</p>
+<p>立马想到把26个字母存到26容量大小的数组里。</p>
+<p>但因为学的时候是要用什么哈希函数然后再取模，所以一直不知道怎么取模能分为26个位置。但后来看了题解，这就不需要什么函数什么取模，每个字母的阿斯克码值就能代表他自己，存入对应的位置。遍历s的时候将数组对应位置加1，遍历t的时候减1。如果最后数组中有不是0的位置，那么就说明字符出现次数不相同，则不为字母异位词。</p>
+<h3 id="3-两个数组的交集"><a href="#3-两个数组的交集" class="headerlink" title="3.两个数组的交集"></a>3.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/intersection-of-two-arrays/">两个数组的交集</a></h3><p><strong>如果哈希值比较少、特别分散、跨度非常大，使用数组就造成空间的极大浪费。</strong></p>
+<p>用set集合。</p>
+<h3 id="4-两数之和"><a href="#4-两数之和" class="headerlink" title="4.两数之和"></a>4.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/">两数之和</a></h3><p>再强调一下 <strong>什么时候使用哈希法</strong>，当我们需要查询一个元素是否出现过，或者一个元素是否在集合里时们就要想到哈希法。</p>
+<p>本题呢，我就需要一个集合来存放我们遍历过的元素，然后在遍历数组的时候去询问这个集合，某元素是否遍历过，也就是 是否出现在这个集合。</p>
+<p>因为本题，我们不仅要知道元素有没有遍历过，还要知道这个元素对应的下标，<strong>需要使用 key value结构来存放，key来存元素，value来存下标，那么使用map正合适</strong>。</p>
+<h3 id="5-四数相加-II"><a href="#5-四数相加-II" class="headerlink" title="5. 四数相加 II"></a>5.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/4sum-ii/"> 四数相加 II</a></h3><p><strong>依然是先想为什么使用哈希法？</strong></p>
+<p>该题目是四数组相加，其实有点像前面第二题，有效的字母异位词，是看两个数组中是否是完全相同的字母。</p>
+<p>该题目就是先遍历前两个数组，保存前两个数组所能出现的相加组合。然后遍历后两个数组，看是否出现 0-前两个数组合的情况.</p>
+<p>说到这里，应该很清楚的能看出，该题目又是要找某个元素之前是否出现过，所以用哈希表。</p>
+<p><strong>那么用什么结构呢？</strong></p>
+<p>此题目不仅要存相加的结果，还要存其出现的次数，所以用Map。</p>
+<h3 id="6-赎金信"><a href="#6-赎金信" class="headerlink" title="6. 赎金信"></a>6.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/ransom-note/"> 赎金信</a></h3><p>做了上面那么多题，本题我一眼就看出了该用哈希表，并且判断用map做，但做到最后发现内存和时间都很耗用。</p>
+<p>回头一看题解才发现自己这次判断对了哈希表，又判断错了用什么结构。</p>
+<p>字母字符只有26个，应该用数组来做，而我选择map，<strong>因为map要维护红黑树或者哈希表，而且还要做哈希函数，是费时的！</strong></p>
+<h3 id="7-三数之和"><a href="#7-三数之和" class="headerlink" title="7.三数之和"></a>7.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/3sum/">三数之和</a></h3><p>该题目是求数组中三数加起来等于0，受前面两数之和的影响，我起初认为是还是用map哈希法去做，但后续发现改题目要求不重复的三元组，而去重这里我不太会。</p>
+<p>看了题解后，说把符合条件的三元组放进vector中，然后再去重，这样是非常费时的，很容易超时，也是这道题目通过率如此之低的根源所在。</p>
+<p>去重的过程不好处理，有很多小细节，如果在面试中很难想到位。</p>
+<p>时间复杂度可以做到O(n^2)，但还是比较费时的，因为不好做剪枝操作。</p>
+<p>因此我学习了该题目的<strong>双指针法</strong>。</p>
+<p>利用for循环遍历，确定第一个数字a。</p>
+<p>剩余两个数字使用双指针去找，如果三数大于0，就让前指针减减，如果小于0，就让后指针加加。</p>
+<p>其次就是做去重操作：</p>
+<p>​		对于a来说，上来就可以去重，当i和i-1一样，就continue跳过。这里为什么不用i和i+1，因为如果数组内是[0,0,0]，你上来一顿操作把0全跳过了，但没想到这也是一组解。</p>
+<p>​		对于bc来说，是要在找到一组解后开始去重，同理如果是[0,-1,-1,-1,1,1,1], 你要是先去重，把中间的都去了，要先至少找到一组解再去重，这样就不会漏掉。找到一组解后再去重也来得及。</p>
+<h3 id="8-四数之和"><a href="#8-四数之和" class="headerlink" title="8.四数之和"></a>8.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/4sum/">四数之和</a></h3><p>这道题相对来说比较有思路，因为它与三数之和没有本质区别，就是用双指针法，在三数之和的基础上多加一层for循环。</p>
+<p>唯一有问题的是：</p>
+<p>在正常思路下进行比较</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> nums[i] + nums[j] + nums[left] + nums[right]; <span class="comment">//相加与target比较</span></span><br></pre></td></tr></table></figure>
+
+<p>但这样做超出内存限制了。</p>
+<p>看了题解后发现要用long</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> (<span class="type">long</span>) nums[i] + nums[j] + nums[left] + nums[right];</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="1-反转字符串"><a href="#1-反转字符串" class="headerlink" title="1.反转字符串"></a>1.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-string/">反转字符串</a></h3><p>该题目比较简单，一眼可看出是用双指针。</p>
+<p>然后交换字符的话我只想到用临时变量。</p>
+<p><strong>还有一种位运算</strong></p>
+<p>&#x3D;&#x3D;异或运算的性质&#x3D;&#x3D;</p>
+<ol>
+<li>运算规则：相同为0，不同为1</li>
+<li>N ^ 0 &#x3D; N  如果某一位是0,0和0相同还是0，某一位为1，1和0不同为1，所以每一位都没变化</li>
+<li>N ^ N &#x3D; 0  每一位都相同，所以为0</li>
+<li>a ^ b &#x3D; b ^ a</li>
+<li>(a ^ b) ^ c &#x3D; a ^ (b ^ c)</li>
+</ol>
+<p><strong>交换数字</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = a ^ b; =&gt; a = a ^ <span class="type">b</span> </span><br><span class="line"><span class="variable">b</span> <span class="operator">=</span> a ^ b; =&gt; b = (a ^ b) ^ b = a;</span><br><span class="line">a = a ^ b; =&gt; a = (a ^ b) ^ a = b;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="2-反转字符串-II"><a href="#2-反转字符串-II" class="headerlink" title="2.反转字符串 II"></a>2.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-string-ii/">反转字符串 II</a></h3><p>做这道题有些乱，随意的思路，没有想好就直接开始做，导致一堆的循环，循环结束条件也很混乱。</p>
+<p>看了答案后恍然大悟，与自己一样的思路，简略不少。</p>
+<ol>
+<li><strong>固定规律一段一段去处理字符串的时候，要想想在在for循环的表达式上做做文章。</strong></li>
+</ol>
+<p>我使用了while，和里面的处理反转的while搞得乱七八糟。</p>
+<h3 id="3-替换数字"><a href="#3-替换数字" class="headerlink" title="3.替换数字"></a>3.<a target="_blank" rel="noopener" href="https://kamacoder.com/problempage.php?pid=1064">替换数字</a></h3><p>做这个题的前一天大致了解了下思路：</p>
+<p>​		<strong>很多数组填充类的问题，其做法都是先预先给数组扩容带填充后的大小，然后在从后向前进行操作。</strong></p>
+<p>从后向前填充元素，避免了从前向后填充元素时，每次添加元素都要将添加元素之后的所有元素向后移动的问题。</p>
+<p>所以这道题知道这些之后就很简单了，先统计数字个数，然后生成新数组（长度是旧+number）</p>
+<p>然后就整两个指针，一个指向新数组末尾，一个指向旧数组末尾，当旧数组遇到字母，就给新数组直接转过去，当遇到数字，就给新数组加number。</p>
+<p>​			</p>
+<h3 id="4-反转字符串中的单词"><a href="#4-反转字符串中的单词" class="headerlink" title="4. 反转字符串中的单词"></a>4.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-words-in-a-string/"> 反转字符串中的单词</a></h3><p>刚上来对这道题没有什么思路。被去除空格和反转字符串这两个不相干的东西搞蒙了。</p>
+<p><strong>先去除空格再反转</strong></p>
+<p>该方法进行操作时，可以把题目中传入的字符串用StringBuffer处理，也可以转为char数组处理。</p>
+<p>&#x3D;&#x3D;先利用双指针去除空格&#x3D;&#x3D;</p>
+<p>快慢指针都指向第一个，然后快指针需要全部遍历。</p>
+<p>当快指针不为空，慢指针&#x3D;快指针，同时慢指针移动一位。</p>
+<p>每个单词末尾都要加空格，所以当快指针有了要给慢指针的东西时，慢指针先让自己该位置上等于空格，然后移动一位</p>
+<p>然后开始接收快指针遍历的单词，直到快指针为空或长度达到。</p>
+<p>&#x3D;&#x3D;反转字符串&#x3D;&#x3D;</p>
+<p>先用基本的反转反转字符串</p>
+<p>&#x3D;&#x3D;反转单词&#x3D;&#x3D;</p>
+<p>把刚才反转字符串搞反的单词进行反转</p>
+<h3 id="5-右旋字符串"><a href="#5-右旋字符串" class="headerlink" title="5.右旋字符串"></a>5.<a target="_blank" rel="noopener" href="https://kamacoder.com/problempage.php?pid=1065">右旋字符串</a></h3><p>为了让本题更有意义，提升一下本题难度：<strong>不能申请额外空间，只能在本串上操作</strong>。 （Java不能在字符串上修改，所以使用java一定要开辟新空间）</p>
+<p>我是用java语言做的，因此比较简单。只需要开辟一个新数组然后先把后面的要旋转的放入数组，然后把前面的放入，就实现了反转。</p>
+<p>之后想了想怎么在本串实现右旋转。想到昨天做的反转字符串中的单词，先整体反转，但是单词自己的顺序也反转了，再对单词进行反转即可。所以这道题也就是先所有都反转，再对右旋的部分反转和对正常的部分反转</p>
+<p>其次看了代码随想录，也可以先局部反转再整体反转。</p>
+<p>同时剑指offer中有道题是左反转，也是同样的方法，只不过是区间有所不同。</p>
+<h3 id="6-找出字符串中第一个匹配项的下标"><a href="#6-找出字符串中第一个匹配项的下标" class="headerlink" title="6.找出字符串中第一个匹配项的下标"></a>6.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/">找出字符串中第一个匹配项的下标</a></h3><p>自己写的时候没有好的思路，就是一通循环做的。</p>
+<p>后来了解到这是KMP算法</p>
+<p>然后看了视频</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PD4y1o7nd/">帮你把KMP算法学个通透！B站（理论篇）</a></p>
+<p>KMP算法解决的是字符串匹配的问题</p>
+<p>利用<strong>前缀表</strong> </p>
+<p>什么是前缀后缀</p>
+<p>例如一个aabaaf</p>
+<p>前缀：a  aa  aab  aaba  aabaa （包含首字母不包含尾字母）</p>
+<p>后缀：f af aaf baaf abaaf （包含尾字母不包含首字母）</p>
+<p>最长相等前后缀：</p>
+<ul>
+<li>a  0</li>
+<li>aa  1</li>
+<li>aab  0</li>
+<li>aaba  1</li>
+<li>aabaa  2</li>
+<li>aabaaf  0</li>
+</ul>
+<p>得到的这串序列就是前缀表</p>
+<p>012345</p>
+<p>aabaaf</p>
+<p>010120</p>
+<p>当在某个位置不匹配时，比如在f不匹配了，就找前一位，是2，也就是从下标为2重新开始匹配。从b字母重新开始匹配。</p>
+<p><strong>为什么使用前缀表可以告诉我们匹配失败之后跳到哪里重新匹配</strong></p>
+<p>012345</p>
+<p>aabaaf</p>
+<p>下标5之前这部分的字符串（也就是字符串aabaa）的最长相等的前缀 和 后缀字符串是 子字符串aa ，因为找到了最长相等的前缀和后缀，匹配失败的位置是后缀子串的后面，那么我们找到与其相同的前缀的后面重新匹配就可以了。</p>
+<p><img src="https://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/KMP%E7%B2%BE%E8%AE%B22.gif" alt="KMP精讲"></p>
+<p><strong>时间复杂度分析</strong></p>
+<p>其中n为文本串长度，m为模式串长度，因为在匹配的过程中，根据前缀表不断调整匹配的位置，可以看出匹配的过程是O(n)，之前还要单独生成next数组，时间复杂度是O(m)。所以整个KMP算法的时间复杂度是O(n+m)的。</p>
+<p>暴力的解法显而易见是O(n × m)，所以<strong>KMP在字符串匹配中极大地提高了搜索的效率。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1M5411j7Xx">帮你把KMP算法学个通透！（求next数组代码篇</a></p>
+<p>next数组，就是存放前缀表的一个的东西，是为了当遇到不匹配的情况时，从该数组找到那个数，去找到从哪开始匹配。</p>
+<p>a a b a a b a a f</p>
+<p>a a b a a f</p>
+<p>0 1 0 1 2 0 （前缀表） </p>
+<p>-1 0 1 0 1 2 （前缀表右移，第一位为-1）</p>
+<p>-1 0 -1 0 1 -1  （前缀表减一）</p>
+<p>不管哪种next数组，其实原理都一样，直接使用前缀表的话，当遇到不匹配就找next数组对应前一位的数字下标。</p>
+<p>右移的话是直接找对应的数字下标，减一的话是找前一位并且再加回来一。</p>
+<p><strong>求next数组</strong></p>
+<p>一共分为4步，初始化，前后缀不相同的情况，前后缀相同的情况，更新next数组的值。</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//next数组和要去匹配的字符串</span><br><span class="line">void getNext(int[] next,String s)&#123;</span><br><span class="line">	//i指向后缀末尾，j指向前缀末尾</span><br><span class="line">	j=0;//前缀肯定从0开始</span><br><span class="line">	//i是后缀末尾，从1开始遍历</span><br><span class="line">	for(i=1;i&lt;s.size;i++)&#123;</span><br><span class="line">		//前后缀不相同</span><br><span class="line">		while(j&gt;0<span class="built_in">&amp;</span><span class="built_in">&amp;</span>s[i]!=s[j])&#123;</span><br><span class="line">			j=next[j-1];//j回退到前一位的数字指向的位置</span><br><span class="line">		&#125;</span><br><span class="line">		//前后缀相同</span><br><span class="line">		if(s[i]==s[j]) j++;</span><br><span class="line">		next[i]=j;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="7-重复的子字符串"><a href="#7-重复的子字符串" class="headerlink" title="7.重复的子字符串"></a>7.<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/repeated-substring-pattern/">重复的子字符串</a></h3><p>&#x3D;&#x3D;暴力解法&#x3D;&#x3D;</p>
+<p>会有很多可能子串，比如长度为1的子串，长度为2,3的都有可能。但最多长度也就到字符串的一半，超过一半就不是子串了。</p>
+<p>所以要遍历这么多种可能，然后第二层循环是测试每个子串与后面子串每个字母是否相同，判断时就用第一个字串的字母去比较加上子串长度后的字母是否相同。这样就能测出是否能用子串构成。</p>
+<p><strong>关于i++和++i的执行效率问题</strong></p>
+<p>for循环中 i++的耗时比++i的要长一些。数据量大些时候就比较明显了；</p>
+<p>原因：</p>
+<p>for循环中 i++ 在处理时，i++实际为i &#x3D; i+1，执行时先创建临时变量保存 i 值，然后再+1，而++i不需要的，没有这个过程，所以++i的性能高于i++;</p>
+<p>工作和学习中，建议尽量使用++i的写法，尽可能提高程序性能；</p>
+<p>&#x3D;&#x3D;KMP算法&#x3D;&#x3D;</p>
+<p>前一道题学了KMP算法，然后自己尝试了一下。</p>
+<p>把next数组按照以前方式求了一下，然后没有想全面，单纯的以为第一个子串全是不一样的字母，然后去统计next数组0的数量，然后觉得就是子串的长度，进而对后续子串遍历，第一个子串对应next数组就该是1 2 3 第二个就是4 5 6这种，但忽略了第一个子串不全是一样的字母，总之考虑总是有些少。</p>
+<p>看了题解：</p>
+<p>最长相等前后缀不包含的地方就是可以重复的子串，所以如果 length %(length - next[size-1]) &#x3D;&#x3D; 0 就是重复的子字符串   </p>
+<p>next[size-1]就是最长相等前后缀。</p>
+<p><strong>上述是为什么？</strong></p>
+<p><img src="https://iyaovo.oss-cn-beijing.aliyuncs.com/myblog/%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/kmp.png"></p>
+<p>步骤一：因为 这是相等的前缀和后缀，t[0] 与 k[0]相同， t[1] 与 k[1]相同，所以 s[0] 一定和 s[2]相同，s[1] 一定和 s[3]相同，即：，s[0]s[1]与s[2]s[3]相同 。</p>
+<p>步骤二： 因为在同一个字符串位置，所以 t[2] 与 k[0]相同，t[3] 与 k[1]相同。</p>
+<p>步骤三： 因为 这是相等的前缀和后缀，t[2] 与 k[2]相同 ，t[3]与k[3] 相同，所以，s[2]一定和s[4]相同，s[3]一定和s[5]相同，即：s[2]s[3] 与 s[4]s[5]相同。</p>
+<p>步骤四：循环往复。</p>
+<p>所以字符串s，s[0]s[1]与s[2]s[3]相同， s[2]s[3] 与 s[4]s[5]相同，s[4]s[5] 与 s[6]s[7] 相同。</p>
+<p>正是因为 最长相等前后缀的规则，当一个字符串由重复子串组成的，最长相等前后缀不包含的子串就是最小重复子串。</p>
+<p><strong>因此，当字符串长度减去最长相等前后缀的长度能被字符串长度整除，那么他就符合条件</strong></p>
 
     </article>
     
@@ -448,7 +618,7 @@
     <div class="article-catelogue--wrapper">
       <div class="catelogue catelogue-1">
         <h3>目录</h3>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">代码随想录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8"><span class="toc-number">1.1.</span> <span class="toc-text">链表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A7%BB%E9%99%A4%E9%93%BE%E8%A1%A8%E5%85%83%E7%B4%A0"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.移除链表元素</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.翻转链表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E6%8C%87%E9%92%88%E6%B3%95"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">双指针法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">递归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">栈</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.两两交换链表中的节点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92-1"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">递归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%A4%B4%E8%8A%82%E7%82%B9"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">虚拟头节点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC-N-%E4%B8%AA%E7%BB%93%E7%82%B9"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.删除链表的倒数第 N 个结点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">思路：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.链表相交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8-II"><span class="toc-number">1.1.6.</span> <span class="toc-text">6. 环形链表 II</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E4%B8%BA%E7%8E%AF"><span class="toc-number">1.1.6.1.</span> <span class="toc-text">判断是否为环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%BE%E7%8E%AF%E7%9A%84%E8%B5%B7%E7%82%B9"><span class="toc-number">1.1.6.2.</span> <span class="toc-text">找环的起点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-number">1.2.</span> <span class="toc-text">哈希表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.基础知识</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">代码随想录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8"><span class="toc-number">1.1.</span> <span class="toc-text">链表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A7%BB%E9%99%A4%E9%93%BE%E8%A1%A8%E5%85%83%E7%B4%A0"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.移除链表元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.翻转链表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.两两交换链表中的节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC-N-%E4%B8%AA%E7%BB%93%E7%82%B9"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.删除链表的倒数第 N 个结点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.链表相交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8-II"><span class="toc-number">1.1.6.</span> <span class="toc-text">6. 环形链表 II</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-number">1.2.</span> <span class="toc-text">哈希表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 有效的字母异位词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9A%84%E4%BA%A4%E9%9B%86"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.两个数组的交集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="toc-number">1.2.4.</span> <span class="toc-text">4.两数之和</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%9B%9B%E6%95%B0%E7%9B%B8%E5%8A%A0-II"><span class="toc-number">1.2.5.</span> <span class="toc-text">5. 四数相加 II</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%B5%8E%E9%87%91%E4%BF%A1"><span class="toc-number">1.2.6.</span> <span class="toc-text">6. 赎金信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="toc-number">1.2.7.</span> <span class="toc-text">7.三数之和</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%9B%9B%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="toc-number">1.2.8.</span> <span class="toc-text">8.四数之和</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.3.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%8D%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.反转字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8F%8D%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2-II"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.反转字符串 II</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%9B%BF%E6%8D%A2%E6%95%B0%E5%AD%97"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.替换数字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%8F%8D%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%8D%95%E8%AF%8D"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 反转字符串中的单词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%8F%B3%E6%97%8B%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.3.5.</span> <span class="toc-text">5.右旋字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%89%BE%E5%87%BA%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8C%B9%E9%85%8D%E9%A1%B9%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="toc-number">1.3.6.</span> <span class="toc-text">6.找出字符串中第一个匹配项的下标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E9%87%8D%E5%A4%8D%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.3.7.</span> <span class="toc-text">7.重复的子字符串</span></a></li></ol></li></ol></li></ol>
       </div>
       
         <div class="catelogue catelogue-2">
