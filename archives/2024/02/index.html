@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>我的技术与生活——about | Hexo</title>
+  <title>我的技术与生活——小站首页 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/imgs/shortcut-icon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/css/public.css" />
@@ -16,7 +16,7 @@
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
   <script>
-    document.title = `我的技术与生活——about`
+    document.title = `我的技术与生活——小站首页`
   </script>
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -344,43 +344,111 @@
     </div>
   </div>
 </div></div>
-      <div id="main-container" class="main-container">
+      <div id="main-container" class="main-container"><link rel="stylesheet" href="/css/partial/archive.css" />
 
 
-  <link rel="stylesheet" href="/css/partial/about.css" />
 
-<div class="about">
-  <div class="about-top">
-    <div class="about-title">
-      <h2>关于我</h2>
-    </div>
-    <div class="about-info">
-      <img class="about-avatar" src="/imgs/avatar.jpg" alt="">
-      <div class="about-detail">
-        
-          <p>姓名：王振懿</p>
-        
-          <p>年龄：20</p>
-        
-          <p>性别：♂</p>
-        
-          <p>家乡：山西省阳泉市盂县</p>
-        
-          <p>现居住地：太原理工大学</p>
-        
-          <p>职业：学生(java后端开发)</p>
-        
-          <p>喜欢：.</p>
-        
-      </div>
-    </div>
-  </div>
-  <div class="about-content">
+    <link rel="stylesheet" href="/css/partial/index.css" />
+
+
+
+<div class="index">
+  <div class="index-left">
     
+      <div class="index-article">
+        <!-- <img class="index-article--cover" src="/imgs/default-cover.webp" alt=""> -->
+        <div class="index-article--box">
+          <img class="index-article--cover" data-cover="imgs/default-cover.webp" alt="MyBatis Plus" />
+        </div>
+        <div class="index-article--content">
+          <a href="/2024/02/16/MyBatis-Plus/">MyBatis Plus </a>
+          <div>
+            
+            
+          </div>
+          <div class="bg"></div>
+        </div>
+      </div>
+    
+  </div>
+  <div class="index-center">
+    
+  </div>
+  <div class="index-right">
+    <div class="index-right-wrapper">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/">经验积累</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></li></ul>
+      <ul class="tags" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/" rel="tag">data structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/backend/" rel="tag">backend</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">2024年02月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">2023年11月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">2023年10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">2023年09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
   </div>
 </div>
 
 
+<script>
+  var allImgBoxs = document.querySelectorAll('.index-article--box');
+  var windowHeight = window.innerHeight;
+  var boxs = Array.from(allImgBoxs);
+  var timer = null;
+  boxs.forEach((box, idx) => {
+    if (!window.loadImageSet || !window.loadImageSet.includes(idx)) {
+      box.classList.add('img-loading');
+    } else {
+      const imgDom = box.querySelector('img');
+      imgDom.src = imgDom.dataset.cover;
+    }
+  });
+
+  function scrollFn() {
+    if (timer) {
+      return;
+    }
+    timer = setTimeout(() => {
+      loadImage();
+      timer = null;
+    }, 100)
+  }
+
+  setTimeout(() => {
+    loadImage();
+  }, 100);
+  if (!window.loadedImage) {
+    document.addEventListener('scroll', scrollFn);
+  }
+
+  function loadImage() {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop;
+    if (boxs.every(box => box.loadedImage)) {
+      document.removeEventListener('scroll', scrollFn);
+      window.loadedImage = 1;
+      return;
+    }
+    boxs.forEach((box, idx) => {
+      if (box.loadedImage) {
+        return;
+      }
+      if (box.getBoundingClientRect().top < windowHeight) {
+        const imgDom = box.querySelector('img');
+        imgDom.src = imgDom.dataset.cover;
+        // 图片成功加载
+        imgDom.onload = () => {
+          box.classList.remove('img-loading');
+          box.loadedImage = true;
+          if (!window.loadImageSet) {
+            window.loadImageSet = [];
+          }
+          window.loadImageSet.push(idx);
+        }
+        // 图片加载失败
+        imgDom.onerror = () => {
+          box.classList.remove('img-loading');
+          box.classList.add('img-error');
+          imgDom.src = '/imgs/404.png';
+        }
+      }
+    });
+  }
+</script> 
 </div>
       <div class="main-right-wrapper"><div class="main-right">
   <div class="main-right--board">
