@@ -193,7 +193,7 @@
   const ipt = document.querySelector('#search-input')
   const btn = document.querySelector('#search-btn')
   const layer = document.querySelector('#search-layer')
-  const posts = JSON.parse(`[{"title":"对象转换工具","path":"2023/10/31/Mapstruct对象转换工具/"},{"title":"图片上传","path":"2023/09/01/图片上传-1/"},{"title":"代码随想录","path":"2023/10/17/代码随想录-2/"},{"title":"计算机网络","path":"2023/11/08/计算机网络-1/"},{"title":"加密算法","path":"2023/10/24/加密算法/"},{"title":"MyBatis Plus","path":"2024/02/16/MyBatis-Plus/"},{"title":"ControllerAdvice","path":"2024/05/10/ControllerAdvice/"},{"title":"MinIO对象存储","path":"2024/04/26/MinIO对象存储/"},{"title":"Redis","path":"2024/02/29/Redis/"},{"title":"SpringSecurity","path":"2024/02/17/SpringSecurity/"},{"title":"本地缓存之王-Caffeine","path":"2024/03/24/本地缓存之王-Caffeine/"},{"title":"Web实时消息推送详解","path":"2024/03/11/Web实时消息推送详解/"}]`)
+  const posts = JSON.parse(`[{"title":"对象转换工具","path":"2023/10/31/Mapstruct对象转换工具/"},{"title":"图片上传","path":"2023/09/01/图片上传-1/"},{"title":"代码随想录","path":"2023/10/17/代码随想录-2/"},{"title":"计算机网络","path":"2023/11/08/计算机网络-1/"},{"title":"MyBatis Plus","path":"2024/02/16/MyBatis-Plus/"},{"title":"ControllerAdvice","path":"2024/05/10/ControllerAdvice/"},{"title":"MinIO对象存储","path":"2024/05/11/MinIO对象存储/"},{"title":"Redis","path":"2024/02/29/Redis/"},{"title":"SpringSecurity","path":"2024/02/17/SpringSecurity/"},{"title":"本地缓存之王-Caffeine","path":"2024/03/24/本地缓存之王-Caffeine/"},{"title":"Web实时消息推送详解","path":"2024/03/11/Web实时消息推送详解/"}]`)
   ipt.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
       handleSearch()
@@ -258,19 +258,19 @@
       <div class="main-left--statics">
         <a href="/categories">
           <div>
-            <span>3</span>
+            <span>4</span>
             <span>分类</span>
           </div>
         </a>
         <a href="/tags">
           <div>
-            <span>2</span>
+            <span>0</span>
             <span>标签</span>
           </div>
         </a>
         <a href="/archives">
           <div>
-            <span>7 </span>
+            <span>6 </span>
             <span>归档</span>
           </div>
         </a>
@@ -327,7 +327,7 @@
       </h5>
       <p class="main-left--subtitle">
         <span>文章数目：</span>
-        <span>12 篇</span>
+        <span>11 篇</span>
       </p>
       <p class="main-left--subtitle">
         <span>最近动态：</span>
@@ -335,7 +335,7 @@
       </p>
       <p class="main-left--subtitle">
         <span>上线时间：</span>
-        <span>263天</span>
+        <span>268天</span>
       </p>
       <p class="main-left--subtitle">
         <span>当前版本：</span>
@@ -358,7 +358,7 @@
           
           <div class="article-info--categories">
             <span>分类：</span>
-            
+            <a class="category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
           </div>
           
           
@@ -373,7 +373,37 @@
       </div>
     </div>
     <article class="article-content markdown-body">
-      
+      <p>顾名思义，@ControllerAdvice就是@Controller 的增强版。@ControllerAdvice主要用来处理全局数据，一般搭配@<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=ExceptionHandler&spm=1001.2101.3001.7020">ExceptionHandler</a>、@ModelAttribute以及@InitBinder使用。</p>
+<h4 id="全局异常处理"><a href="#全局异常处理" class="headerlink" title="全局异常处理"></a>全局异常处理</h4><p>@ControllerAdvice最常见的使用场景就是全局异常处理。比如文件上传大小限制的配置，如果用户上传的文件超过了限制大小，就会抛出异常,此时可以通过@ControllerAdvice结合@ExceptionHandler定义全局异常捕获机制，代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CustomExceptionHandler</span> &#123;</span><br><span class="line">    <span class="meta">@ExceptionHandler(MaxUploadSizeExceededException.class)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">uploadException</span><span class="params">(MaxUploadSizeExceededException e, HttpServletResponse resp)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        resp.setContentType(<span class="string">&quot;text/html;charset=utf-8&quot;</span>);</span><br><span class="line">        System.out.println(<span class="number">1111</span>);</span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> resp.getWriter();</span><br><span class="line">        out.write(<span class="string">&quot;上传文件大小超出限制!&quot;</span>);</span><br><span class="line">        out.flush();</span><br><span class="line">        out.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只需在系统中定义CustomExceptionHandler类，然后添加@ControllerAdvice注解即可。当系统启动时，该类就会被扫描到Spring容器中，然后定义uploadException方法，在该方法上添加了@ExceptionHandler注解，其中定义的MaxUploadSizeExceededException.class 表明该方法用来处理MaxUploadSizeExceededException类型的异常。如果想让该方法处理所有类型的异常，只需将MaxUploadSizeExceededException改为 Exception即可。方法的参数可以有异常实例、HttpServletResponse以及HttpServletRequest、Model 等，返回值可以是一段JSON、一个ModelAndView、一个逻辑视图名等。</p>
+<h4 id="添加全局数据"><a href="#添加全局数据" class="headerlink" title="添加全局数据"></a>添加全局数据</h4><p>@ControllerAdvice是一个全局数据处理组件，因此也可以在@ControllerAdvice中配置全局数据，使用@<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=ModelAttribute&spm=1001.2101.3001.7020">ModelAttribute</a>注解进行配置，代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalConfig</span> &#123;</span><br><span class="line">    <span class="meta">@ModelAttribute(value = &quot;info&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; <span class="title function_">userInfo</span><span class="params">()</span> &#123;</span><br><span class="line">        HashMap&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;罗贯中&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;gender&quot;</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在全局配置中添加userInfo方法，返回一个map。该方法有一个注解@ModelAttribute，其中的value属性表示这条返回数据的key，而方法的返回值是返回数据的value。<br>        此时在任意请求的Controller 中，通过方法参数中的Model都可以获取info 的数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyController</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">(Model model)</span> &#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = model.asMap();</span><br><span class="line">        Set&lt;String&gt; keySet = map.keySet();</span><br><span class="line">        Iterator&lt;String&gt; iterator = keySet.iterator();</span><br><span class="line">        <span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> iterator.next();</span><br><span class="line">            <span class="type">Object</span> <span class="variable">value</span> <span class="operator">=</span> map.get(key);</span><br><span class="line">            System.out.println(key + <span class="string">&quot;&gt;&gt;&gt;&gt;&gt;&quot;</span> + value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="请求参数预处理"><a href="#请求参数预处理" class="headerlink" title="请求参数预处理"></a>请求参数预处理</h4><p>@ControllerAdvice结合@InitBinder还能实现请求参数预处理，即将表单中的数据绑定到实体类上时进行一些额外处理。</p>
+<p>例如有两个实体类 Book和 Author，代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Book</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String author;</span><br><span class="line">    <span class="meta">@JsonIgnore</span><span class="comment">//一般标记在属性或者方法上，返回的json数据即不包含该属性</span></span><br><span class="line">    <span class="keyword">private</span> Float price;</span><br><span class="line">    <span class="meta">@JsonFormat(pattern = &quot;yyyy-MM-dd&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Date publicationDate;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Author</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在 Controller 上需要接收两个实体类的数据，Controller 中的方法定义如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalConfig1</span> &#123;</span><br><span class="line">    <span class="meta">@InitBinder(&quot;b&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(WebDataBinder binder)</span> &#123;</span><br><span class="line">        binder.setFieldDefaultPrefix(<span class="string">&quot;b.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@InitBinder(&quot;a&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init2</span><span class="params">(WebDataBinder binder)</span> &#123;</span><br><span class="line">        binder.setFieldDefaultPrefix(<span class="string">&quot;a.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>代码解释:</p>
+<p>在 GlobalConfig类中创建两个方法，第一个@InitBinder(“b”)表示该方法是处理@ModelAttribute(“b”)对应的参数的，第二个@InitBinder(“a”)表示该方法是处理@ModelAttribute(“a”)对应的参数的。<br>        在每个方法中给相应的 Field设置一个前缀，然后在浏览器中请求http:&#x2F;ocalhost:8080&#x2F;book?b.name&#x3D;三国演义&amp;b.author&#x3D;罗贯中&amp;a.name&#x3D;曹雪芹&amp;a.age&#x3D;48，即可成功地区分出name属性。<br>        在WebDataBinder对象中，还可以设置允许的字段、禁止的字段、必填字段以及验证器等。</p>
+<p>&#x3D;&#x3D;参考&#x3D;&#x3D;</p>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43581790/article/details/123871439">https://blog.csdn.net/qq_43581790/article/details/123871439</a></p>
+
     </article>
     
     <div class="read-nums">
@@ -394,15 +424,20 @@
     <div class="article-catelogue--wrapper">
       <div class="catelogue catelogue-1">
         <h3>目录</h3>
-        
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">全局异常处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">添加全局数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">请求参数预处理</span></a></li></ol>
       </div>
       
         <div class="catelogue catelogue-2">
+          
+            <p>
+              <span>上一篇：</span>
+              <a href="/2024/05/11/MinIO对象存储/">MinIO对象存储</a>
+            </p>
            
           
             <p>
               <span>下一篇</span>
-              <a href="/2024/04/26/MinIO对象存储/">MinIO对象存储</a>
+              <a href="/2024/03/24/本地缓存之王-Caffeine/">本地缓存之王-Caffeine</a>
             </p>
           
         </div>
