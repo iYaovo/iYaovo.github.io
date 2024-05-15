@@ -219,10 +219,11 @@
           <div>
             <a href="/${post.path}">${post.title.replace(new RegExp(ipt.value), `<span>${ipt.value}</span>`)}</a>
           </div>
-          <img src="${post.cover || '/imgs/default-cover.webp' }" />
+          <img src="${'../../imgs/default-cover.webp' }" />
         </li>
       `
     })
+    // post.cover || 
     if (html.trim () === '') {
       html += '<p class="empty">没有搜索到内容</p>'
     }
