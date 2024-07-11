@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>我的技术与生活——AsyncTool | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/imgs/shortcut-icon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/public.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/iconfont.css" />
+  <link rel="stylesheet" href="/css/APlayer.min.css" />
+  <script src="/js/APlayer.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.pjax.min.js"></script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script>
+    document.title = `我的技术与生活——AsyncTool`
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<style>
+  .load {
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(37, 35, 40);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 9999;
+  }
+  .load-circle {
+    width: 80px;
+    height: 80px;
+    border: 8px solid orange;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate 1s linear infinite;
+    filter: drop-shadow(0 0 3px orange);
+  }
+  .load-circle-inner {
+    width: 40px;
+    height: 40px;
+    border: 8px solid orange;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: rotate-reverse .5s linear infinite;
+  }
+  .load-text {
+    margin-top: 20px;
+    font-size: 24px;
+    color: orange;
+    display: flex;
+  }
+  .load-text span {
+    margin: 0 5px;
+    text-shadow: 5px 5px 5px orange;
+    animation: move 1s linear infinite;
+  }
+  .load-text span:nth-child(1) {
+    animation-delay: -0.6s;
+  }
+  .load-text span:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  .load-text span:nth-child(3) {
+    animation-delay: -0.4s;
+  }
+  .load-text span:nth-child(4) {
+    animation-delay: -0.3s;
+  }
+  .load-text span:nth-child(5) {
+    animation-delay: -0.2s;
+  }
+  .load-text span:nth-child(6) {
+    animation-delay: -0.1s;
+  }
+  @keyframes rotate {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes rotate-reverse {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(-360deg); }
+  }
+  @keyframes move {
+    0% { transform: translateY(0%) rotate(0) scale(1); }
+    20% { transform: translateY(20%) rotate(10deg) scale(1.2); }
+    80% { transform: translateY(-10%) rotate(-20deg) scale(.8);}
+    100% { transform: translateY(0) rotate(0) scale(1); }
+  }
+
+  .progress {
+    position: fixed;
+    left: 0; top: 0;
+    width: 0;
+    height: 3px;
+    background-color: green;
+    transition: all cubic-bezier(0.215, 0.610, 0.355, 1) .1s;
+    z-index: 9999;
+  }
+
+  .to-up {
+    animation: toUp .5s 1;
+  }
+  .gray {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    background-color: #000;
+    mix-blend-mode: color;
+  }
+  @keyframes toUp {
+    from { transform: translateY(15px); opacity: 0; }
+    to { transform: translateY(0) ; opacity: 1; }
+  }
+</style>
+<body>
+  <div id="load" class="load">
+    <div class="load-circle">
+      <div class="load-circle-inner"></div>
+    </div>
+    <p class="load-text">
+      <span>L</span>
+      <span>O</span>
+      <span>A</span>
+      <span>D</span>
+      <span>I</span>
+      <span>N</span>
+      <span>G</span>
+    </p>
+  </div>
+  <div id="container" class="container w-100 vh-100" style="display: none;">
+    <header class="header">
+  <div class="header-wrapper">
+    <div class="header-left">
+      <div class="header-search">
+        <input id="search-input" type="text" class="header-search--input" placeholder="请输入要检索的文章标题" />
+        <span id="search-btn" class="header-search--icon"><i class="iconfont icon-sousuo"></i></span>
+      </div>
+      <div id="search-layer" class="header-search--layer hidden">
+        <p class="title">
+          <span>以下是搜索内容：</span>
+          <span id="close-layer-btn">关闭</span>
+        </p>
+        <ul>
+        </ul>
+      </div>
+    </div>
+    <div class="header-right">
+      <ul class="header-menu">
+        <li>
+          <a href="http://example.com/">
+            <i class="header-menu--icon iconfont icon-shouye"></i>
+            <span class="header-menu--span">首页</span>
+          </a>
+        </li>
+        <li>
+          <a href="http://example.com/log">
+            <i class="header-menu--icon iconfont icon-rizhi"></i>
+            <span class="header-menu--span">日志</span>
+          </a>
+        </li>
+        <li>
+          <a href="http://example.com/link">
+            <i class="header-menu--icon iconfont icon-youqinglianjie"></i>
+            <span class="header-menu--span">友情链接</span>
+          </a>
+        </li>
+        <li>
+          <a href="http://example.com/about">
+            <i class="header-menu--icon iconfont icon-guanyuwomen"></i>
+            <span class="header-menu--span">关于我</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  const ipt = document.querySelector('#search-input')
+  const btn = document.querySelector('#search-btn')
+  const layer = document.querySelector('#search-layer')
+  const posts = JSON.parse(`[{"title":"对象转换工具","path":"2023/10/31/Mapstruct对象转换工具/"},{"title":"图片上传","path":"2023/09/01/图片上传-1/"},{"title":"代码随想录","path":"2023/10/17/代码随想录-2/"},{"title":"计算机网络","path":"2023/11/08/计算机网络-1/"},{"title":"MyBatis Plus","path":"2024/02/16/MyBatis-Plus/"},{"title":"ControllerAdvice","cover":null,"path":"2024/05/10/ControllerAdvice/"},{"title":"MinIO对象存储","path":"2024/05/11/MinIO对象存储/"},{"title":"Redis","path":"2024/02/29/Redis/"},{"title":"SpringSecurity","path":"2024/02/17/SpringSecurity/"},{"title":"本地缓存之王-Caffeine","path":"2024/03/24/本地缓存之王-Caffeine/"},{"title":"Web实时消息推送详解","path":"2024/03/11/Web实时消息推送详解/"},{"title":"AsyncTool","path":"2024/07/06/asyncTool/"}]`)
+  ipt.addEventListener('keyup', e => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  })
+  btn.addEventListener('click', () => {
+    handleSearch()
+  })
+
+  document.querySelector('#close-layer-btn').addEventListener('click', () => {
+    layer.classList.toggle('hidden')
+  })
+
+  function handleSearch() {
+    if (ipt.value.trim() === '') {
+      return
+    }
+    let html = ''
+    const targetPosts = posts.filter(post => post.title.includes(ipt.value))
+    targetPosts.forEach(post => {
+      html += `
+        <li>
+          <div>
+            <a href="/${post.path}">${post.title.replace(new RegExp(ipt.value), `<span>${ipt.value}</span>`)}</a>
+          </div>
+          <img src="${post.cover || '/imgs/default-cover.webp' }" />
+        </li>
+      `
+    })
+    if (html.trim () === '') {
+      html += '<p class="empty">没有搜索到内容</p>'
+    }
+    layer.querySelector('ul').innerHTML = html
+    layer.classList.remove('hidden')
+  }
+</script> 
+    <section id="main" class="main">
+      <div class="main-left-wrapper">
+<div class="main-left">
+  <div class="main-left--block">
+    <div class="main-left--info">
+      <img src="/imgs/avatar.jpg"" class="main-left--avatar" />
+      <div class="main-left--intro">
+        <p class="main-left--name">iYaovo</p>
+        <div class="main-left--tags">
+          <span class="main-left--tag">中二</span>
+          <span class="main-left--tag">宅</span>
+        </div>
+      </div>
+    </div>
+  
+    <div>
+      <div class="main-left--motto">
+        <p>“时间不站在你那边”</p>
+        <p></p>
+      </div>
+      <div class="main-left--github">
+        <span class="line"></span>
+        <a target="_blank" rel="noopener" href="https://github.com/iYaovo"><i class="logo iconfont icon-github-fill"></i></a>
+        <span class="line"></span>
+      </div>
+      <div class="main-left--statics">
+        <a href="/categories">
+          <div>
+            <span>4</span>
+            <span>分类</span>
+          </div>
+        </a>
+        <a href="/tags">
+          <div>
+            <span>0</span>
+            <span>标签</span>
+          </div>
+        </a>
+        <a href="/archives">
+          <div>
+            <span>7 </span>
+            <span>归档</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-left--block">
+    <ul class="main-left--menu">
+      
+        <li>
+          <a href="/">
+            <span class="header-menu--span">小站首页</span>
+            <i class="header-menu--icon iconfont icon-shouye"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/log">
+            <span class="header-menu--span">个人日志</span>
+            <i class="header-menu--icon iconfont icon-rizhi"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/link">
+            <span class="header-menu--span">友情链接</span>
+            <i class="header-menu--icon iconfont icon-youqinglianjie"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/about">
+            <span class="header-menu--span">关于自己</span>
+            <i class="header-menu--icon iconfont icon-guanyuwomen"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/tools">
+            <span class="header-menu--span">我的工具</span>
+            <i class="header-menu--icon iconfont icon-gongju"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="main-left--block">
+    <div class="main-left--site">
+      <h5 class="main-left--title">
+        <span>站点信息</span>
+        <i class="iconfont icon-zhandian"></i>
+      </h5>
+      <p class="main-left--subtitle">
+        <span>文章数目：</span>
+        <span>12 篇</span>
+      </p>
+      <p class="main-left--subtitle">
+        <span>最近动态：</span>
+        <span>今天</span>
+      </p>
+      <p class="main-left--subtitle">
+        <span>上线时间：</span>
+        <span>325天</span>
+      </p>
+      <p class="main-left--subtitle">
+        <span>当前版本：</span>
+        <span>v1.0.2</span>
+      </p>
+    </div>
+  </div>
+</div></div>
+      <div id="main-container" class="main-container">
+
+
+  <link rel="stylesheet" href="/css/partial/article.css" />
+
+<div class="article-container">
+  <div class="article">
+    <h1 class="article-title">AsyncTool</h1>
+    <div class="article-info">
+      <div class="article-info--item">
+        <div class="article-info--info">
+          
+          <div class="article-info--categories">
+            <span>分类：</span>
+            
+          </div>
+          
+          
+          <div class="article-info--tags">
+            <span>标签：</span>
+            
+          </div>
+          
+          <p class="article-info--date">日期：2024-07-06 10:48:06</p>
+        </div>
+        <img src="/imgs/default-cover.webp" alt="" class="article-cover">
+      </div>
+    </div>
+    <article class="article-content markdown-body">
+      <h1 id="AsyncTool"><a href="#AsyncTool" class="headerlink" title="AsyncTool"></a>AsyncTool</h1><p>它是由京东零售开源的项目，作者是<a target="_blank" rel="noopener" href="https://tianyalei.blog.csdn.net/?type=blog">天涯泪小武</a>。</p>
+<p>该框架目前正在 <strong>京东App后台</strong> 接受苛刻、高并发、海量用户等复杂场景业务的检验测试，随时会根据实际情况发布更新和bugFix。目前来说，2019年底上线已经稳定运行2年+</p>
+<h2 id="为什么会学习这个框架"><a href="#为什么会学习这个框架" class="headerlink" title="为什么会学习这个框架"></a>为什么会学习这个框架</h2><p>最近在学习java并发中的<strong>CompletableFuture</strong>，它除了提供了更为好用和强大的 <code>Future</code> 特性之外，还提供了函数式编程、异步任务编排组合（可以将多个异步任务串联起来，组成一个完整的链式调用）等能力。</p>
+<p>在上网查阅资料的过程中发现一款可支持线程编排的并行框架 asyncTool，在Gitee官网找到后发现该项目不仅开源作者还写了文档去一行一行代码进行教学，这让一个对并发编排任务感兴趣但又没有基础的人来了兴趣，因此我结合源码以及作者的介绍以及其他博客的分析去学习了该框架。</p>
+<h2 id="框架的作用"><a href="#框架的作用" class="headerlink" title="框架的作用"></a>框架的作用</h2><p>这个模块我特别喜欢作者的介绍，先引出问题然后回答，让我一个并没有并发项目经验的人深刻理解这个框架究竟是要做什么，以下是对作者介绍的借鉴和自己的总结：</p>
+<h3 id="为什么需要一个这样的带任务编排的框架"><a href="#为什么需要一个这样的带任务编排的框架" class="headerlink" title="为什么需要一个这样的带任务编排的框架"></a>为什么需要一个这样的带任务编排的框架</h3><p>1.当用户请求某个功能时，可能需要去调用各种各样的接口最后汇总结果去展示给用户。</p>
+<p>2.在一些需求中可能不同块代码之间有依赖关系，后执行的需要依赖先执行的，以及超时、阻塞、异常等情况的处理</p>
+<p>用图片来解释就是（图片来自作者）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200102112739114.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly90aWFueWFsZWkuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="img"></p>
+<h3 id="并发框架的监控"><a href="#并发框架的监控" class="headerlink" title="并发框架的监控"></a>并发框架的监控</h3><p>任务编排其实可以通过CompletableFuture的api经过复杂的组装后实现，但对于该类来说，使用者在supplyAsync()后无法知道该异步任务的执行情况，虽然也有一些方法可以获取执行结果以及执行中的异常，但如果该任务没有执行被跳过或者其他情况那么就不知道了，因此并发框架应该能对每一步任务进行监控，无论成功失败都应该有回调。</p>
+<h3 id="每个任务之间应该有强弱依赖"><a href="#每个任务之间应该有强弱依赖" class="headerlink" title="每个任务之间应该有强弱依赖"></a>每个任务之间应该有强弱依赖</h3><p>例如上面的图片中的一些情况：</p>
+<ul>
+<li>A执行完后才能执行B</li>
+<li>A B全执行完后才能执行C</li>
+<li>A B其中一个执行后执行C</li>
+<li>A B其中某一个指定执行后执行C</li>
+</ul>
+<p>所以在写该框架时每个任务都有自己的依赖任务和下级任务，依赖任务按要求执行后才能执行该任务</p>
+<h3 id="任务可以使用依赖任务中的结果"><a href="#任务可以使用依赖任务中的结果" class="headerlink" title="任务可以使用依赖任务中的结果"></a>任务可以使用依赖任务中的结果</h3><p>既然任务之间有执行顺序，那么一定想使用上级的结果来处理本级的任务吧。</p>
+<h3 id="超时时间设置"><a href="#超时时间设置" class="headerlink" title="超时时间设置"></a>超时时间设置</h3><p>虽然每一个任务单独的时间无法设置，但可以设置全组任务的timeout，来控制该任务的执行时间</p>
+<h3 id="框架高性能低线程"><a href="#框架高性能低线程" class="headerlink" title="框架高性能低线程"></a>框架高性能低线程</h3><p>该框架中全程无锁</p>
+<p>AB执行后才能执行C这种情况下，C会运行在AB中后执行完的那个线程上，严格贯彻低线程理念</p>
+<h2 id="框架的应用"><a href="#框架的应用" class="headerlink" title="框架的应用"></a>框架的应用</h2><h3 id="串行"><a href="#串行" class="headerlink" title="串行"></a>串行</h3><p>串行比较好设计，那就来三个任务依次执行即可</p>
+<p>在该框架中任务需要实现IWorker接口和ICallback接口，并重写以下方法：</p>
+<ul>
+<li>begin() 任务开始前执行的方法</li>
+<li>action() 任务中耗时操作执行的位置</li>
+<li>result() 任务执行后的结果,可以在此处理action中的结果值</li>
+<li>defalutValue() 当执行中有异常后的默认返回值</li>
+</ul>
+<p>模拟串行场景：A任务对参数+1，之后B任务对参数+2，之后C任务对参数+3。</p>
+<p>A任务:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WorkerA</span> <span class="keyword">implements</span> <span class="title class_">IWorker</span>&lt;Integer, Integer&gt;, ICallback&lt;Integer, Integer&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">begin</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;A - Thread:&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;- start --&quot;</span> + SystemClock.now());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">action</span><span class="params">(Integer object, Map&lt;String, WorkerWrapper&gt; allWrappers)</span> &#123;</span><br><span class="line">        <span class="type">Integer</span> <span class="variable">res</span> <span class="operator">=</span> object + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">result</span><span class="params">(<span class="type">boolean</span> success, Integer param, WorkResult&lt;Integer&gt; workResult)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;A - param:&quot;</span> + JSON.toJSONString(param));</span><br><span class="line">        System.out.println(<span class="string">&quot;A - result:&quot;</span> + JSON.toJSONString(workResult));</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;A - Thread:&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;- end --&quot;</span> + SystemClock.now());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">defaultValue</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;A - defaultValue&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">101</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>B任务:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WorkerB</span> <span class="keyword">implements</span> <span class="title class_">IWorker</span>&lt;Integer, Integer&gt;, ICallback&lt;Integer, Integer&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">begin</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;B - Thread:&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;- start --&quot;</span> + SystemClock.now());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">action</span><span class="params">(Integer object, Map&lt;String, WorkerWrapper&gt; allWrappers)</span> &#123;</span><br><span class="line">        <span class="type">Integer</span> <span class="variable">res</span> <span class="operator">=</span> object + <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">result</span><span class="params">(<span class="type">boolean</span> success, Integer param, WorkResult&lt;Integer&gt; workResult)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;B - param:&quot;</span> + JSON.toJSONString(param));</span><br><span class="line">        System.out.println(<span class="string">&quot;B - result:&quot;</span> + JSON.toJSONString(workResult));</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;B - Thread:&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;- end --&quot;</span> + SystemClock.now());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">defaultValue</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;B - defaultValue&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">102</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>任务3：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WorkerC</span> <span class="keyword">implements</span> <span class="title class_">IWorker</span>&lt;Integer, Integer&gt;, ICallback&lt;Integer, Integer&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">begin</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;C - Thread:&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;- start --&quot;</span> + SystemClock.now());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">action</span><span class="params">(Integer object, Map&lt;String, WorkerWrapper&gt; allWrappers)</span> &#123;</span><br><span class="line">        <span class="type">Integer</span> <span class="variable">res</span> <span class="operator">=</span> object + <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">result</span><span class="params">(<span class="type">boolean</span> success, Integer param, WorkResult&lt;Integer&gt; workResult)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;C - param:&quot;</span> + JSON.toJSONString(param));</span><br><span class="line">        System.out.println(<span class="string">&quot;C - result:&quot;</span> + JSON.toJSONString(workResult));</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;C - Thread:&quot;</span> + Thread.currentThread().getName() + <span class="string">&quot;- end --&quot;</span> + SystemClock.now());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">defaultValue</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;C - defaultValue&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">103</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>编写WorkerWrapper包装类，该类就是任务编排的core类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A没有depend</span></span><br><span class="line"><span class="type">WorkerWrapper</span> <span class="variable">wrapperA</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer, Integer&gt;()</span><br><span class="line">        .id(<span class="string">&quot;workerA&quot;</span>)</span><br><span class="line">        .worker(workerA)</span><br><span class="line">        .callback(workerA)</span><br><span class="line">        .param(<span class="number">1</span>)</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">//B的depend是A</span></span><br><span class="line"><span class="type">WorkerWrapper</span> <span class="variable">wrapperB</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer, Integer&gt;()</span><br><span class="line">        .id(<span class="string">&quot;workerB&quot;</span>)</span><br><span class="line">        .worker(workerB)</span><br><span class="line">        .callback(workerB)</span><br><span class="line">        .param(<span class="number">2</span>)</span><br><span class="line">        .depend(wrapperA)</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">//C的depend是B</span></span><br><span class="line"><span class="type">WorkerWrapper</span> <span class="variable">wrapperC</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer, Integer&gt;()</span><br><span class="line">        .id(<span class="string">&quot;workerC&quot;</span>)</span><br><span class="line">        .worker(workerC)</span><br><span class="line">        .callback(workerC)</span><br><span class="line">        .param(<span class="number">3</span>)</span><br><span class="line">        .depend(wrapperB)</span><br><span class="line">        .build();</span><br><span class="line"><span class="comment">//begin</span></span><br><span class="line">Async.beginWork(<span class="number">1000</span>, wrapperA);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过WorkerWrapper中的静态内部类Build去构建一个WorkerWrapper对象，从而实现任务的编排</p>
+<p>最后通过Async类提交任务执行</p>
+<h3 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h3><p>并行只需3个任务一并丢进beginWork中即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Async.beginWork(<span class="number">1000</span>, wrapperA,wrapperB,wrapperC);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h3 id="阻塞等待-先串行，后并行"><a href="#阻塞等待-先串行，后并行" class="headerlink" title="阻塞等待 - 先串行，后并行"></a>阻塞等待 - 先串行，后并行</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException &#123;</span><br><span class="line">      <span class="type">Worker1</span> <span class="variable">worker1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Worker1</span>();</span><br><span class="line">      <span class="type">Worker2</span> <span class="variable">worker2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Worker2</span>();</span><br><span class="line">      <span class="type">Worker3</span> <span class="variable">worker3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Worker3</span>();</span><br><span class="line"></span><br><span class="line">      <span class="type">WorkerWrapper</span> <span class="variable">wrapper1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer,Integer&gt;()</span><br><span class="line">              .id(<span class="string">&quot;worker1&quot;</span>)</span><br><span class="line">              .worker(worker1)</span><br><span class="line">              .callback(worker1)</span><br><span class="line">              .param(<span class="number">1</span>)</span><br><span class="line">              .build();</span><br><span class="line"></span><br><span class="line">      <span class="type">WorkerWrapper</span> <span class="variable">wrapper2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer,Integer&gt;()</span><br><span class="line">              .id(<span class="string">&quot;worker2&quot;</span>)</span><br><span class="line">              .worker(worker2)</span><br><span class="line">              .depend(wrapper1)</span><br><span class="line">              .callback(worker2)</span><br><span class="line">              .param(<span class="number">2</span>)</span><br><span class="line">              .build();</span><br><span class="line"></span><br><span class="line">      <span class="type">WorkerWrapper</span> <span class="variable">wrapper3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer,Integer&gt;()</span><br><span class="line">              .id(<span class="string">&quot;worker3&quot;</span>)</span><br><span class="line">              .worker(worker3)</span><br><span class="line">              .depend(wrapper1)</span><br><span class="line">              .callback(worker3)</span><br><span class="line">              .param(<span class="number">3</span>)</span><br><span class="line">              .build();</span><br><span class="line"></span><br><span class="line">      Async.beginWork(<span class="number">5000</span>,wrapper1);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>让BC都依赖于A然后把A丢进beginWork即可.</p>
+<h3 id="阻塞等待-先并行，后串行"><a href="#阻塞等待-先并行，后串行" class="headerlink" title="阻塞等待 - 先并行，后串行"></a>阻塞等待 - 先并行，后串行</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException &#123;</span><br><span class="line">      <span class="type">Worker1</span> <span class="variable">worker1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Worker1</span>();</span><br><span class="line">      <span class="type">Worker2</span> <span class="variable">worker2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Worker2</span>();</span><br><span class="line">      <span class="type">Worker3</span> <span class="variable">worker3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Worker3</span>();</span><br><span class="line"></span><br><span class="line">      <span class="type">WorkerWrapper</span> <span class="variable">wrapper1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer,Integer&gt;()</span><br><span class="line">              .id(<span class="string">&quot;worker1&quot;</span>)</span><br><span class="line">              .worker(worker1)</span><br><span class="line">              .callback(worker1)</span><br><span class="line">              .param(<span class="number">1</span>)</span><br><span class="line">              .build();</span><br><span class="line"></span><br><span class="line">      <span class="type">WorkerWrapper</span> <span class="variable">wrapper2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer,Integer&gt;()</span><br><span class="line">              .id(<span class="string">&quot;worker2&quot;</span>)</span><br><span class="line">              .worker(worker2)</span><br><span class="line">              .callback(worker2)</span><br><span class="line">              .param(<span class="number">2</span>)</span><br><span class="line">              .build();</span><br><span class="line"></span><br><span class="line">      <span class="type">WorkerWrapper</span> <span class="variable">wrapper3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer,Integer&gt;()</span><br><span class="line">              .id(<span class="string">&quot;worker3&quot;</span>)</span><br><span class="line">              .worker(worker3)</span><br><span class="line">              .depend(wrapper1,wrapper2)</span><br><span class="line">              .callback(worker3)</span><br><span class="line">              .param(<span class="number">3</span>)</span><br><span class="line">              .build();</span><br><span class="line"></span><br><span class="line">      Async.beginWork(<span class="number">5000</span>,wrapper1,wrapper2);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>C依赖AB，把AB 一起丢入即可</p>
+<h3 id="异常-超时回调"><a href="#异常-超时回调" class="headerlink" title="异常&#x2F;超时回调"></a>异常&#x2F;超时回调</h3><p>这2种场景，可以基于以上场景微调，即可debug调试。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Async.beginWork(<span class="type">long</span> timeout, ExecutorService executorService, WorkerWrapper... workerWrapper)</span><br></pre></td></tr></table></figure>
+
+
+<p>1.基于全组设定的timeout，如果超时了，则worker中的返回值使用defaultValue()<br>2.如果当前Worker任务异常了，则当前任务使用defaultValue()，并且depend当前任务的，也FastFail，返回defaultValue()</p>
+<h2 id="框架的实现"><a href="#框架的实现" class="headerlink" title="框架的实现"></a>框架的实现</h2><h3 id="包结构"><a href="#包结构" class="headerlink" title="包结构"></a>包结构</h3><p><img src="https://img-blog.csdnimg.cn/9ecda1dad6934d888a971314293bec8a.png#pic_center"></p>
+<p>图片来自<a target="_blank" rel="noopener" href="https://blog.csdn.net/rongtaoup?type=blog">涛声依旧叭</a></p>
+<p>回调包即为实现作者对并发框架每一步任务监控的想法的实现</p>
+<p>包装类即为编排任务核心类</p>
+<p>执行器即对编排任务根据依赖关系去执行的实现</p>
+<h3 id="简单调用流程"><a href="#简单调用流程" class="headerlink" title="简单调用流程"></a>简单调用流程</h3><p>Async执行器触发WorkerWrapper包装器类执行，WorkerWrapper中包装了任务类IWorker和回调类ICallback以及任务之间的依赖关系还有异常返回</p>
+<h3 id="回调接口：IWorker、ICallback"><a href="#回调接口：IWorker、ICallback" class="headerlink" title="回调接口：IWorker、ICallback"></a>回调接口：IWorker、ICallback</h3><p>&#x3D;&#x3D;IWorker&#x3D;&#x3D;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 每个最小执行单元需要实现该接口</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wuweifeng wrote on 2019-11-19.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">IWorker</span>&lt;T, V&gt; &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在这里做耗时操作，如rpc请求、IO等</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> object</span></span><br><span class="line"><span class="comment">     *         object</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    V <span class="title function_">action</span><span class="params">(T object, Map&lt;String, WorkerWrapper&gt; allWrappers)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 超时、异常时，返回的默认值</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 默认值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    V <span class="title function_">defaultValue</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&lt;T, V&gt; T入参泛型  V出参泛型</p>
+<p>&#x3D;&#x3D;ICallback&#x3D;&#x3D;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 每个执行单元执行完毕后，会回调该接口&lt;/p&gt;</span></span><br><span class="line"><span class="comment"> * 需要监听执行结果的，实现该接口即可</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wuweifeng wrote on 2019-11-19.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ICallback</span>&lt;T, V&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">begin</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 耗时操作执行完毕后，就给value注入值</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">result</span><span class="params">(<span class="type">boolean</span> success, T param, WorkResult&lt;V&gt; workResult)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 默认回调类，如果不设置的话，会默认给这个回调</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wuweifeng wrote on 2019-11-19.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DefaultCallback</span>&lt;T, V&gt; <span class="keyword">implements</span> <span class="title class_">ICallback</span>&lt;T, V&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">begin</span><span class="params">()</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">result</span><span class="params">(<span class="type">boolean</span> success, T param, WorkResult&lt;V&gt; workResult)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不传回调类默认给一个空的回调</p>
+<h3 id="包装类WorkerWrapper"><a href="#包装类WorkerWrapper" class="headerlink" title="包装类WorkerWrapper"></a>包装类WorkerWrapper</h3><p>有WorkerWrapper和DependWrapper两个类，因为依赖任务中还有个必要属性must，即判断是否某个任务执行后才能往后执行，还是只要任一执行即能向后执行。</p>
+<h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 对每个worker及callback进行包装，一对一</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wuweifeng wrote on 2019-11-19.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WorkerWrapper</span>&lt;T, V&gt; &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该wrapper的唯一标识</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * worker将来要处理的param</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T param;</span><br><span class="line">    <span class="keyword">private</span> IWorker&lt;T, V&gt; worker;</span><br><span class="line">    <span class="keyword">private</span> ICallback&lt;T, V&gt; callback;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在自己后面的wrapper，如果没有，自己就是末尾；如果有一个，就是串行；如果有多个，有几个就需要开几个线程&lt;/p&gt;</span></span><br><span class="line"><span class="comment">     * -------2</span></span><br><span class="line"><span class="comment">     * 1</span></span><br><span class="line"><span class="comment">     * -------3</span></span><br><span class="line"><span class="comment">     * 如1后面有2、3</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;WorkerWrapper&lt;?, ?&gt;&gt; nextWrappers;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 依赖的wrappers，有2种情况，1:必须依赖的全部完成后，才能执行自己 2:依赖的任何一个、多个完成了，就可以执行自己</span></span><br><span class="line"><span class="comment">     * 通过must字段来控制是否依赖项必须完成</span></span><br><span class="line"><span class="comment">     * 1</span></span><br><span class="line"><span class="comment">     * -------3</span></span><br><span class="line"><span class="comment">     * 2</span></span><br><span class="line"><span class="comment">     * 1、2执行完毕后才能执行3</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;DependWrapper&gt; dependWrappers;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 标记该事件是否已经被处理过了，譬如已经超时返回false了，后续rpc又收到返回值了，则不再二次回调</span></span><br><span class="line"><span class="comment">     * 经试验,volatile并不能保证&quot;同一毫秒&quot;内,多线程对该值的修改和拉取</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * 1-finish, 2-error, 3-working</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">AtomicInteger</span> <span class="variable">state</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该map存放所有wrapper的id和wrapper映射</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, WorkerWrapper&gt; forParamUseWrappers;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 也是个钩子变量，用来存临时的结果</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> WorkResult&lt;V&gt; workResult = WorkResult.defaultResult();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否在执行自己前，去校验nextWrapper的执行结果&lt;p&gt;</span></span><br><span class="line"><span class="comment">     * 1   4</span></span><br><span class="line"><span class="comment">     * -------3</span></span><br><span class="line"><span class="comment">     * 2</span></span><br><span class="line"><span class="comment">     * 如这种在4执行前，可能3已经执行完毕了（被2执行完后触发的），那么4就没必要执行了。</span></span><br><span class="line"><span class="comment">     * 注意，该属性仅在nextWrapper数量&lt;=1时有效，&gt;1时的情况是不存在的</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">needCheckNextWrapperResult</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">FINISH</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ERROR</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">WORKING</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">INIT</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>几个重要属性：</p>
+<ul>
+<li>worker&#x2F;callback 任务类和回调类 param action方法中的参数(要处理的参数)</li>
+<li>nextWrappers 在该任务后执行的任务</li>
+<li>dependWrappers 该任务依赖的任务</li>
+</ul>
+<h4 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h4><p>在阅读源码的过程中发现WorkerWrapper类中有一个静态内部类Builder，看了分析文章以及查阅资料后才知道这是建造者模式</p>
+<p><strong>建造者模式：</strong>建造者模式将对象的创建过程和表现分离，并且调用方通过指挥者调用方法对对象进行构建，使得调用方不再关心对象构建过程，构建对象的具体过程可以根据传入类型的不同而改变。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用建造者模式构建WorkerWrapper</span></span><br><span class="line"><span class="type">WorkerWrapper</span> <span class="variable">wrapperA</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WorkerWrapper</span>.Builder&lt;Integer, Integer&gt;()</span><br><span class="line">        .id(<span class="string">&quot;workerA&quot;</span>)</span><br><span class="line">        .worker(workerA)</span><br><span class="line">        .callback(workerA)</span><br><span class="line">        .param(<span class="literal">null</span>)</span><br><span class="line">        .depend(wrapperB, wrapperC)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span>&lt;W, C&gt; &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 该wrapper的唯一标识</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">id</span> <span class="operator">=</span> UUID.randomUUID().toString();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * worker将来要处理的param</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> W param;</span><br><span class="line">    <span class="keyword">private</span> IWorker&lt;W, C&gt; worker;</span><br><span class="line">    <span class="keyword">private</span> ICallback&lt;W, C&gt; callback;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自己后面的所有</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;WorkerWrapper&lt;?, ?&gt;&gt; nextWrappers;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自己依赖的所有</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;DependWrapper&gt; dependWrappers;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 存储强依赖于自己的wrapper集合</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Set&lt;WorkerWrapper&lt;?, ?&gt;&gt; selfIsMustSet;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">needCheckNextWrapperResult</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内部类Builder中的属性和WorkerWrapper中的一样，主要是通过build()方法去构建WorkerWrapper对象。</p>
+<h3 id="AsyncTool执行器工作过程"><a href="#AsyncTool执行器工作过程" class="headerlink" title="AsyncTool执行器工作过程"></a>AsyncTool执行器工作过程</h3><p>不传入线程池默认</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ThreadPoolExecutor</span> <span class="variable">COMMON_POOL</span> <span class="operator">=</span></span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(Runtime.getRuntime().availableProcessors() * <span class="number">2</span>,  </span><br><span class="line">                    <span class="number">1024</span>,</span><br><span class="line">                    <span class="number">15L</span>, </span><br><span class="line">                    TimeUnit.SECONDS,</span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;&gt;(),</span><br><span class="line">                    (ThreadFactory) Thread::<span class="keyword">new</span>);</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数：表示线程池的核心线程数是系统可用处理器数量的两倍。这样做可以确保在大多数情况下，有足够的线程来并行处理任务，充分利用多核CPU的计算能力。</p>
+<p>第二个参数：最大线程数</p>
+<p>第三&#x2F;四个参数：存活时间，当线程数大于核心线程数时，多余的空闲线程在终止前等待新任务的最长时间。</p>
+<p>第五个参数：<code>LinkedBlockingQueue</code>实例，这是一个基于链表结构的阻塞队列。它的大小没有限制（或者说是Integer.MAX_VALUE）</p>
+<p>第六个参数：线程工厂</p>
+<p><strong>核心方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">beginWork</span><span class="params">(<span class="type">long</span> timeout, ThreadPoolExecutor pool, List&lt;WorkerWrapper&gt; workerWrappers)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException &#123;</span><br><span class="line">    	<span class="comment">//没有任务直接返回false</span></span><br><span class="line">        <span class="keyword">if</span>(workerWrappers == <span class="literal">null</span> || workerWrappers.size() == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//定义一个map，存放所有的wrapper，key为wrapper的唯一id，value是该wrapper，可以从value中获取wrapper的result</span></span><br><span class="line">        Map&lt;String, WorkerWrapper&gt; forParamUseWrappers = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;&gt;();</span><br><span class="line">        CompletableFuture[] futures = <span class="keyword">new</span> <span class="title class_">CompletableFuture</span>[workerWrappers.size()];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; workerWrappers.size(); i++) &#123;</span><br><span class="line">            <span class="type">WorkerWrapper</span> <span class="variable">wrapper</span> <span class="operator">=</span> workerWrappers.get(i);</span><br><span class="line">            <span class="comment">//用CompletableFuture异步执行任务</span></span><br><span class="line">            futures[i] = CompletableFuture.runAsync(() -&gt; wrapper.work(pool, timeout, forParamUseWrappers), pool);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//用CompletableFuture异步执行任务全部执行完后获取结果</span></span><br><span class="line">            CompletableFuture.allOf(futures).get(timeout, TimeUnit.MILLISECONDS);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (TimeoutException e) &#123;</span><br><span class="line">            Set&lt;WorkerWrapper&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">            totalWorkers(workerWrappers, set);</span><br><span class="line">            <span class="keyword">for</span> (WorkerWrapper wrapper : set) &#123;</span><br><span class="line">                wrapper.stopNow();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="WorkerWrapper处理任务"><a href="#WorkerWrapper处理任务" class="headerlink" title="WorkerWrapper处理任务"></a>WorkerWrapper处理任务</h3><h4 id="核心work"><a href="#核心work" class="headerlink" title="核心work()"></a>核心work()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 开始工作</span></span><br><span class="line"><span class="comment">     * fromWrapper代表这次work是由哪个上游wrapper发起的</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">work</span><span class="params">(ThreadPoolExecutor poolExecutor, WorkerWrapper fromWrapper, <span class="type">long</span> remainTime, Map&lt;String, WorkerWrapper&gt; forParamUseWrappers)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.forParamUseWrappers = forParamUseWrappers;</span><br><span class="line">        <span class="comment">//将自己放到所有wrapper的集合里去</span></span><br><span class="line">        forParamUseWrappers.put(id, <span class="built_in">this</span>);</span><br><span class="line">        <span class="type">long</span> <span class="variable">now</span> <span class="operator">=</span> SystemClock.now();</span><br><span class="line">        <span class="comment">//总的已经超时了，就快速失败，进行下一个</span></span><br><span class="line">        <span class="keyword">if</span> (remainTime &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            fastFail(INIT, <span class="literal">null</span>);</span><br><span class="line">            beginNext(poolExecutor, now, remainTime);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果自己已经执行过了。</span></span><br><span class="line">        <span class="comment">//可能有多个依赖，其中的一个依赖已经执行完了，并且自己也已开始执行或执行完毕。当另一个依赖执行完毕，又进来该方法时，就不重复处理了</span></span><br><span class="line">        <span class="keyword">if</span> (getState() == FINISH || getState() == ERROR) &#123;</span><br><span class="line">            beginNext(poolExecutor, now, remainTime);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果在执行前需要校验nextWrapper的状态</span></span><br><span class="line">        <span class="keyword">if</span> (needCheckNextWrapperResult) &#123;</span><br><span class="line">            <span class="comment">//如果自己的next链上有已经出结果或已经开始执行的任务了，自己就不用继续了</span></span><br><span class="line">            <span class="keyword">if</span> (!checkNextWrapperResult()) &#123;</span><br><span class="line">                fastFail(INIT, <span class="keyword">new</span> <span class="title class_">SkippedException</span>());</span><br><span class="line">                beginNext(poolExecutor, now, remainTime);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果没有任何依赖，说明自己就是第一批要执行的</span></span><br><span class="line">        <span class="keyword">if</span> (dependWrappers == <span class="literal">null</span> || dependWrappers.size() == <span class="number">0</span>) &#123;</span><br><span class="line">            fire();</span><br><span class="line">            beginNext(poolExecutor, now, remainTime);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*如果有前方依赖，存在两种情况</span></span><br><span class="line"><span class="comment">         一种是前面只有一个wrapper。即 A  -&gt;  B</span></span><br><span class="line"><span class="comment">        一种是前面有多个wrapper。A C D -&gt;   B。需要A、C、D都完成了才能轮到B。但是无论是A执行完，还是C执行完，都会去唤醒B。</span></span><br><span class="line"><span class="comment">        所以需要B来做判断，必须A、C、D都完成，自己才能执行 */</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//只有一个依赖</span></span><br><span class="line">        <span class="keyword">if</span> (dependWrappers.size() == <span class="number">1</span>) &#123;</span><br><span class="line">            doDependsOneJob(fromWrapper);</span><br><span class="line">            beginNext(poolExecutor, now, remainTime);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//有多个依赖时</span></span><br><span class="line">            doDependsJobs(poolExecutor, dependWrappers, fromWrapper, now, remainTime);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>作者的注释十分清晰</p>
+<p>工作步骤是：</p>
+<ul>
+<li>保存所有任务forParamUseWrappers</li>
+<li>判断是否超时</li>
+<li>检查是否已经执行过，避免重复处理</li>
+<li>检查next是否已经开始执行了，避免多余的处理</li>
+<li>没有任何依赖的话自己直接fire()执行</li>
+<li>有依赖的话doDependsOneJob&#x2F;doDependsJobs</li>
+</ul>
+<p>只有一个依赖的话，执行完就可以执行自己了</p>
+<p>多个依赖的话，需要判断must依赖是否已经全执行才可以执行自己</p>
+<h4 id="执行fire"><a href="#执行fire" class="headerlink" title="执行fire()"></a>执行fire()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 执行自己的job.具体的执行是在另一个线程里,但判断阻塞超时是在work线程</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">fire</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">//阻塞取结果</span></span><br><span class="line">  workResult = workerDoJob();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 具体的单个worker执行任务</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">private</span> WorkResult&lt;V&gt; <span class="title function_">workerDoJob</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1.Check重复执行</span></span><br><span class="line">    <span class="keyword">if</span> (!checkIsNullResult()) &#123;</span><br><span class="line">      <span class="keyword">return</span> workResult;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">//2.设置Wrapper状态为Working</span></span><br><span class="line">      <span class="comment">//如果已经不是init状态了，说明正在被执行或已执行完毕。这一步很重要，可以保证任务不被重复执行</span></span><br><span class="line">      <span class="keyword">if</span> (!compareAndSetState(INIT, WORKING)) &#123;</span><br><span class="line">        <span class="keyword">return</span> workResult;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//3.回调begin</span></span><br><span class="line">      callback.begin();</span><br><span class="line"></span><br><span class="line">      <span class="comment">//4.执行耗时操作action</span></span><br><span class="line">      <span class="type">V</span> <span class="variable">resultValue</span> <span class="operator">=</span> worker.action(param, forParamUseWrappers);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//5.设置Wrapper状态为FINISH</span></span><br><span class="line">      <span class="comment">//如果状态不是在working,说明别的地方已经修改了</span></span><br><span class="line">      <span class="keyword">if</span> (!compareAndSetState(WORKING, FINISH)) &#123;</span><br><span class="line">        <span class="keyword">return</span> workResult;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      workResult.setResultState(ResultState.SUCCESS);</span><br><span class="line">      workResult.setResult(resultValue);</span><br><span class="line">      <span class="comment">//6.回调result</span></span><br><span class="line">      callback.result(<span class="literal">true</span>, param, workResult);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> workResult;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">      <span class="comment">//7.异常处理：设置状态ERROR\EXCEPTION，结果设置为默认值</span></span><br><span class="line">      fastFail(WORKING, e);</span><br><span class="line">      <span class="keyword">return</span> workResult;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="beginNext"><a href="#beginNext" class="headerlink" title="beginNext()"></a>beginNext()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 进行下一个任务</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">beginNext</span><span class="params">(ExecutorService executorService, <span class="type">long</span> now, <span class="type">long</span> remainTime)</span> &#123;</span><br><span class="line">    <span class="comment">//花费的时间</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">costTime</span> <span class="operator">=</span> SystemClock.now() - now;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1.后续没有任务了</span></span><br><span class="line">    <span class="keyword">if</span> (nextWrappers == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.后续只有1个任务，使用当前任务的线程执行next任务</span></span><br><span class="line">    <span class="keyword">if</span> (nextWrappers.size() == <span class="number">1</span>) &#123;</span><br><span class="line">        nextWrappers.get(<span class="number">0</span>).work(executorService, WorkerWrapper.<span class="built_in">this</span>, remainTime - costTime, forParamUseWrappers);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//3.后续有多个任务，使用CompletableFuture[]包装，有几个任务就起几个线程执行</span></span><br><span class="line">    CompletableFuture[] futures = <span class="keyword">new</span> <span class="title class_">CompletableFuture</span>[nextWrappers.size()];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nextWrappers.size(); i++) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">finalI</span> <span class="operator">=</span> i;</span><br><span class="line">        futures[i] = CompletableFuture.runAsync(() -&gt; nextWrappers.get(finalI)</span><br><span class="line">                .work(executorService, WorkerWrapper.<span class="built_in">this</span>, remainTime - costTime, forParamUseWrappers), executorService);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//4.阻塞获取Future结果，注意这里没有超时时间，超时时间由全局统一控制。</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        CompletableFuture.allOf(futures).get();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException | ExecutionException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>开启下一个任务，如果没有就结束程序，有一个就启动一个线程，有多个就启动多个。</p>
+<h4 id="doDependsOneJob"><a href="#doDependsOneJob" class="headerlink" title="doDependsOneJob()"></a>doDependsOneJob()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doDependsOneJob</span><span class="params">(WorkerWrapper dependWrapper)</span> &#123;</span><br><span class="line">    <span class="comment">//1.依赖超时？</span></span><br><span class="line">    <span class="keyword">if</span> (ResultState.TIMEOUT == dependWrapper.getWorkResult().getResultState()) &#123;</span><br><span class="line">        workResult = defaultResult();</span><br><span class="line">        fastFail(INIT, <span class="literal">null</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="comment">//2.依赖异常？</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (ResultState.EXCEPTION == dependWrapper.getWorkResult().getResultState()) &#123;</span><br><span class="line">        workResult = defaultExResult(dependWrapper.getWorkResult().getEx());</span><br><span class="line">        fastFail(INIT, <span class="literal">null</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="comment">//3.依赖正常</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//前面任务正常完毕了，该自己了</span></span><br><span class="line">        fire();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果判断到只有一个依赖的时候就要进入这个方法，看自己依赖的方法执行情况，如果依赖的方法超时那自己也超时</p>
+<h4 id="doDependsJobs"><a href="#doDependsJobs" class="headerlink" title="doDependsJobs()"></a>doDependsJobs()</h4><p>先判断依赖的任务是否是must，如果一个都不是那就执行自己。</p>
+<p>如果存在需要必须完成的，且fromWrapper不是必须的，就什么也不干，等到必须完成的完成了的时候就会让该任务进行的</p>
+<p>如果fromWrapper是必须的，就判断是否所有的必须都完成了，并检查他们的情况，有超时即自己也超时</p>
+<h4 id="如何确保多依赖任务不被重复执行"><a href="#如何确保多依赖任务不被重复执行" class="headerlink" title="如何确保多依赖任务不被重复执行"></a>如何确保多依赖任务不被重复执行</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可能有多个依赖，其中的一个依赖已经执行完了，并且自己也已开始执行或执行完毕。当另一个依赖执行完毕，又进来该方法时，就不重复处理了</span></span><br><span class="line">        <span class="keyword">if</span> (getState() == FINISH || getState() == ERROR) &#123;</span><br><span class="line">            beginNext(poolExecutor, now, remainTime);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="框架的特点"><a href="#框架的特点" class="headerlink" title="框架的特点"></a>框架的特点</h2><h3 id="SystemClock"><a href="#SystemClock" class="headerlink" title="SystemClock"></a>SystemClock</h3><p>在项目中获取当前时间没有使用System.currentTimeMillis()而是自己写了一个SystemClock</p>
+<p>项目中通过单例模式创建了一个时钟类<code>SystemClock</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用于解决高并发下System.currentTimeMillis卡顿</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lry</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SystemClock</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> period;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicLong now;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 单例模式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">InstanceHolder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">SystemClock</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SystemClock</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SystemClock</span><span class="params">(<span class="type">int</span> period)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.period = period;</span><br><span class="line">        <span class="built_in">this</span>.now = <span class="keyword">new</span> <span class="title class_">AtomicLong</span>(System.currentTimeMillis());</span><br><span class="line">        scheduleClockUpdating();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SystemClock <span class="title function_">instance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> InstanceHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 守护线程</span></span><br><span class="line"><span class="comment">     * 每1ms写一次now系统当前时间。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">scheduleClockUpdating</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ScheduledExecutorService</span> <span class="variable">scheduler</span> <span class="operator">=</span> Executors.newSingleThreadScheduledExecutor(runnable -&gt; &#123;</span><br><span class="line">            <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(runnable, <span class="string">&quot;System Clock&quot;</span>);</span><br><span class="line">            <span class="comment">//守护线程，必须在线程启动前设置</span></span><br><span class="line">            thread.setDaemon(<span class="literal">true</span>);</span><br><span class="line">            <span class="keyword">return</span> thread;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">//定时周期执行任务</span></span><br><span class="line">        scheduler.scheduleAtFixedRate(() -&gt; now.set(System.currentTimeMillis()), period, period, TimeUnit.MILLISECONDS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="title function_">currentTimeMillis</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> now.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用来替换原来的System.currentTimeMillis()</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">long</span> <span class="title function_">now</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> instance().currentTimeMillis();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建了一个守护线程，每1ms对 <code>AtomicLong now</code>进行更新 <code>System.currentTimeMillis()</code>，因为守护线程的执行周期是每1ms执行一次，这里是有1ms的延迟。</p>
+<p><code>ScheduledExecutorService</code> 是 <code>ExecutorService</code> 的子类，它基于 <code>ExecutorService</code> 功能实现周期执行的任务。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/tianyaleixiaowu/category_9637010.html">手写中间件之——并发框架_天涯泪小武的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/rongtaoup/category_11864180.html">并行编排AsyncTool框架源码解析_涛声依旧叭的博客-CSDN博客</a></p>
+
+    </article>
+    
+    <div class="read-nums">
+      <!-- id 将作为查询条件 -->
+      <span id="2024/07/06/asyncTool/" class="leancloud_visitors" data-flag-title="Your Article Title">
+        <em class="post-meta-item-text">浏览量</em>
+        <i class="leancloud-visitors-count"></i>
+      </span>
+    </div>
+    <div class="comments-intro">
+      <h2>评论区</h2>
+      <p>欢迎你留下宝贵的意见，昵称输入QQ号会显示QQ头像哦~</p>
+    </div>
+    <div id="vcomments" class="vcomments"></div>
+    
+  </div>
+  <div class="article-catelogue">
+    <div class="article-catelogue--wrapper">
+      <div class="catelogue catelogue-1">
+        <h3>目录</h3>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AsyncTool"><span class="toc-number">1.</span> <span class="toc-text">AsyncTool</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%AD%A6%E4%B9%A0%E8%BF%99%E4%B8%AA%E6%A1%86%E6%9E%B6"><span class="toc-number">1.1.</span> <span class="toc-text">为什么会学习这个框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">框架的作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E4%B8%80%E4%B8%AA%E8%BF%99%E6%A0%B7%E7%9A%84%E5%B8%A6%E4%BB%BB%E5%8A%A1%E7%BC%96%E6%8E%92%E7%9A%84%E6%A1%86%E6%9E%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">为什么需要一个这样的带任务编排的框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E6%A1%86%E6%9E%B6%E7%9A%84%E7%9B%91%E6%8E%A7"><span class="toc-number">1.2.2.</span> <span class="toc-text">并发框架的监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AF%8F%E4%B8%AA%E4%BB%BB%E5%8A%A1%E4%B9%8B%E9%97%B4%E5%BA%94%E8%AF%A5%E6%9C%89%E5%BC%BA%E5%BC%B1%E4%BE%9D%E8%B5%96"><span class="toc-number">1.2.3.</span> <span class="toc-text">每个任务之间应该有强弱依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E4%BE%9D%E8%B5%96%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-number">1.2.4.</span> <span class="toc-text">任务可以使用依赖任务中的结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.5.</span> <span class="toc-text">超时时间设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E9%AB%98%E6%80%A7%E8%83%BD%E4%BD%8E%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.2.6.</span> <span class="toc-text">框架高性能低线程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">框架的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%B2%E8%A1%8C"><span class="toc-number">1.3.1.</span> <span class="toc-text">串行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.3.2.</span> <span class="toc-text">并行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E7%AD%89%E5%BE%85-%E5%85%88%E4%B8%B2%E8%A1%8C%EF%BC%8C%E5%90%8E%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.3.3.</span> <span class="toc-text">阻塞等待 - 先串行，后并行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E7%AD%89%E5%BE%85-%E5%85%88%E5%B9%B6%E8%A1%8C%EF%BC%8C%E5%90%8E%E4%B8%B2%E8%A1%8C"><span class="toc-number">1.3.4.</span> <span class="toc-text">阻塞等待 - 先并行，后串行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8-%E8%B6%85%E6%97%B6%E5%9B%9E%E8%B0%83"><span class="toc-number">1.3.5.</span> <span class="toc-text">异常&#x2F;超时回调</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.</span> <span class="toc-text">框架的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.1.</span> <span class="toc-text">包结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="toc-number">1.4.2.</span> <span class="toc-text">简单调用流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E8%B0%83%E6%8E%A5%E5%8F%A3%EF%BC%9AIWorker%E3%80%81ICallback"><span class="toc-number">1.4.3.</span> <span class="toc-text">回调接口：IWorker、ICallback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E7%B1%BBWorkerWrapper"><span class="toc-number">1.4.4.</span> <span class="toc-text">包装类WorkerWrapper</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">1.4.4.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA"><span class="toc-number">1.4.4.2.</span> <span class="toc-text">构建</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AsyncTool%E6%89%A7%E8%A1%8C%E5%99%A8%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.5.</span> <span class="toc-text">AsyncTool执行器工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WorkerWrapper%E5%A4%84%E7%90%86%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.4.6.</span> <span class="toc-text">WorkerWrapper处理任务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83work"><span class="toc-number">1.4.6.1.</span> <span class="toc-text">核心work()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8Cfire"><span class="toc-number">1.4.6.2.</span> <span class="toc-text">执行fire()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#beginNext"><span class="toc-number">1.4.6.3.</span> <span class="toc-text">beginNext()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#doDependsOneJob"><span class="toc-number">1.4.6.4.</span> <span class="toc-text">doDependsOneJob()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#doDependsJobs"><span class="toc-number">1.4.6.5.</span> <span class="toc-text">doDependsJobs()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E5%A4%9A%E4%BE%9D%E8%B5%96%E4%BB%BB%E5%8A%A1%E4%B8%8D%E8%A2%AB%E9%87%8D%E5%A4%8D%E6%89%A7%E8%A1%8C"><span class="toc-number">1.4.6.6.</span> <span class="toc-text">如何确保多依赖任务不被重复执行</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.5.</span> <span class="toc-text">框架的特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SystemClock"><span class="toc-number">1.5.1.</span> <span class="toc-text">SystemClock</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.6.</span> <span class="toc-text">参考</span></a></li></ol></li></ol>
+      </div>
+      
+        <div class="catelogue catelogue-2">
+           
+          
+            <p>
+              <span>下一篇</span>
+              <a href="/2024/05/11/MinIO对象存储/">MinIO对象存储</a>
+            </p>
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // var定义，避免pjax重新进来造成的重复声明错误
+  var config = JSON.parse('{"enable":true,"appId":"Pf8zCXGEH1qsprnWfikVVujL-gzGzoHsz","appKey":"qOqoiUHhH1TGtLRUYURkLRQX","placeholder":"请留下你宝贵的意见吧~","meta":["nick"],"recordIP":true,"visitor":true,"enableQQ":true}')
+  new Valine({
+    el: '#vcomments',
+    appId: config.appId,
+    appKey: config.appKey,
+    placeholder: config.placeholder,
+    meta: config.meta,
+    recordIP: config.recordIP,
+    visitor: config.visitor,
+    enableQQ: config.enableQQ,
+    path: '2024/07/06/asyncTool/'
+  })
+</script>
+
+
+<script>
+  $(document).on('pjax:complete', function() {
+    const tocs = document.querySelector('.toc')
+    const links = tocs ? tocs.querySelectorAll('a') : []
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        const href = decodeURIComponent(e.href)
+        href.search(/#(.*)/)
+        const id = RegExp.$1
+        const target = document.querySelector('#' + id)
+        const top = target.offsetTop
+        document.documentElement.scrollTo({
+          top: top - 100,
+          behavior: 'smooth'
+        })
+        e.preventDefault()
+      })
+    })
+  })
+</script> 
+
+</div>
+      <div class="main-right-wrapper"><div class="main-right">
+  <div class="main-right--board">
+    <div class="main-right--title">
+      <h5>公告栏</h5>
+      <i class="iconfont icon-gonggao"></i>
+    </div>
+    <div class="main-right--content">
+      Hello~大家好。我是iYaovo，欢迎你们来到我的博客小站，希望能在这里收获到有用的东西哦！ 
+    </div>
+  </div>
+
+  <div id="aplayer" class="main-right--music"></div>
+
+  <div class="operate-items">
+    <div class="operate-item backtop">
+      <i class="iconfont icon-huidaodingbu"></i>
+      <span>回到顶部</span>
+    </div>
+    
+    <div class="operate-item turn-comment hidden">
+      <i class="iconfont icon-pinglun"></i>
+      <span>查看评论</span>
+    </div>
+    
+  </div>
+
+  <div class="main-right--site">
+    <div class="main-right--power">
+      <p>Power By <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a>.</p>
+      <p>Theme：<a target="_blank" rel="noopener" href="https://github.com/Aizener/hexo-theme-cola">Cola.</a></p>
+    </div>
+    <p class="main-right--refer"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/#/Integrated/index">蜀ICP备2022005384号-1</a> </p>
+  </div>
+</div>
+
+<script>
+  function setOperateItem () {
+    const reg = /\d{4}\/\d{2}\/\d{2}\/.+/
+    const path = location.pathname
+    const operateDom = document.querySelector('.main-right .operate-items')
+    const commentDom = document.querySelector('.turn-comment')
+    const cateloguDom = document.querySelector('.article-catelogue > .article-catelogue--wrapper');
+
+    if (commentDom) {
+      if (reg.test(path) || path.match(/\/log\/.+/)) {
+        commentDom.classList.remove('hidden')
+        const newDom = operateDom.cloneNode(true);
+        const _backtopDom = newDom.querySelector('.backtop');
+        const _commentDom = newDom.querySelector('.turn-comment');
+        _backtopDom.addEventListener('click', () => backTopEvent());
+        _commentDom.addEventListener('click', () => commentDomEvent());
+        cateloguDom.appendChild(newDom);
+      } else {
+        commentDom.classList.add('hidden')
+      }
+    }
+  }
+
+  setOperateItem()
+  const musics = JSON.parse(`[{"name":"如果呢","artist":"郑润泽","url":"music/如果呢.mp3","cover":"https://pic.jitapai.com/wp-content/uploads/2021/06/2021062207282652.png"},{"name":"忘不掉的你","artist":"h3R3","url":"music/忘不掉的你.mp3","cover":"https://pic.jitapai.com/wp-content/uploads/2022/03/2022031407481132.jpg"},{"name":"明天","artist":"马思唯","url":"music/明天.mp3","cover":"https://tse4-mm.cn.bing.net/th/id/OIP-C.nzzINQpsCrL76xe4WYqmBQHaHa?pid=ImgDet&rs=1"}]`)
+  const ap = new APlayer({
+    container: document.querySelector('#aplayer'),
+    audio: musics,
+  })
+
+  $(document).on('pjax:complete', function() {
+    setOperateItem()
+  })
+
+  document.querySelector('.backtop').addEventListener('click', () => {
+    backTopEvent();
+  })
+  const dom = document.querySelector('.turn-comment')
+  dom && dom.addEventListener('click', () => {
+    commentDomEvent();
+  })
+
+  function backTopEvent() {
+    document.documentElement.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  function commentDomEvent() {
+    const commentDom = document.querySelector('.comments-intro')
+    if (!commentDom) return
+    const top = commentDom.offsetTop, height = commentDom.offsetHeight
+    document.documentElement.scrollTo({
+      top: top - 2 * height,
+      behavior: 'smooth'
+    })
+  }
+</script></div>
+    </section>
+  </div>
+  <div id="progress" class="progress"></div>
+  <div id="gray" class="gray"></div>
+
+  <script>
+    function initScroll () {
+      document.addEventListener('scroll', () => {
+        const doc = document.documentElement
+        const scrollTop = doc.scrollTop
+        const pageHeight = doc.offsetHeight
+        const clientHeight = doc.clientHeight
+        const ratio = scrollTop / (pageHeight - clientHeight)
+        const progress = document.querySelector('#progress')
+        const avatarImg = document.querySelector('.main-left--avatar')
+        progress.style.width = (100 * ratio) + '%'
+        avatarImg.style.transform = `rotate(${360 * ratio}deg)`
+      })
+    }
+
+    const rootPath = "/"
+
+    const checkAndSetArticlePageLayout = () => {
+      const path = location.pathname.replace(rootPath, '');
+      if (
+        /^\/?\d{4}\/\d{2}\/\d{2}\/.*/.test(path) ||
+        /^log\/.+/.test(path)
+      ) {
+        $('.main-container, .main-right, .main-right-wrapper').addClass('is-article')
+      } else {
+        $('.main-container, .main-right, .main-right-wrapper').removeClass('is-article')
+      }
+    }
+
+    const gray = "none"
+    const setGrayStyle = () => {
+      if (gray === 'none') {
+        return
+      } else if (gray === 'index') {
+        location.pathname === '/' ? $('#gray').show() : $('#gray').hide()
+      } else if (gray === 'all') {
+        $('#gray').show()
+      }
+    }
+    setGrayStyle()
+
+
+    window.onload = function () {
+      checkAndSetArticlePageLayout()
+      setTimeout(() => {
+        $('#load').slideUp()
+        $('#container').slideToggle()
+        setTimeout(() => {
+          initScroll();
+        }, 500)
+      }, 500)
+    }
+    
+    let status = 0
+    // 对所有链接跳转事件绑定pjax容器container
+    $(document).pjax('a[target!=_blank]', '#main-container', {
+      container: '#main-container',
+      fragment: '#main-container',
+      timeout: 8000
+    })
+
+    $(document).on('pjax:start', function() {
+    })
+    $(document).on('pjax:complete', function() {
+      status = 0
+      $('.main-container').addClass('to-up').on('animationend', function() {
+        $(this).removeClass('to-up')
+      })
+      setGrayStyle()
+      checkAndSetArticlePageLayout()
+    })
+    $(document).on('pjax:popstate', function() {
+      status = -1
+      checkAndSetArticlePageLayout()
+    });
+  </script>
+</body>
+</html>
